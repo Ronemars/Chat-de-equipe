@@ -231,6 +231,14 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
   .input-area { padding: 10px 14px 14px; }
   .header { padding: 11px 14px; }
 }
+
+/* Avatar images */
+.av img, .agent-av img, .wc-av img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: inherit;
+}
+.av { overflow: hidden; }
+.agent-av { overflow: hidden; }
+.wc-av { overflow: hidden; }
 </style>
 </head>
 <body>
@@ -251,21 +259,21 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 
     <div class="sidebar-agents">
       <div class="agent-row">
-        <div class="agent-av" style="background:#f97316;">TN</div>
+        <div class="agent-av" style="background:#f97316;"><img src="https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg" alt="Tony" onerror="this.parentElement.textContent='TN'"></div>
         <div class="agent-info">
           <div class="agent-nm" style="color:var(--tony);">Tony</div>
           <div class="agent-role">Homem de Ferro · Lógica</div>
         </div>
       </div>
       <div class="agent-row">
-        <div class="agent-av" style="background:#e879f9;">AR</div>
+        <div class="agent-av" style="background:#e879f9;"><img src="https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg" alt="Arlequina" onerror="this.parentElement.textContent='AR'"></div>
         <div class="agent-info">
           <div class="agent-nm" style="color:var(--arle);">Arlequina</div>
           <div class="agent-role">Caos Genial · Emoção</div>
         </div>
       </div>
       <div class="agent-row">
-        <div class="agent-av" style="background:#38bdf8;">BW</div>
+        <div class="agent-av" style="background:#38bdf8;"><img src="https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg" alt="Bruce" onerror="this.parentElement.textContent='BW'"></div>
         <div class="agent-info">
           <div class="agent-nm" style="color:var(--bruce);">Bruce</div>
           <div class="agent-role">Batman · Ideias & Mediação</div>
@@ -313,7 +321,7 @@ const MAX_CONVS = 5;
 
 const AGENTS = [
   {
-    id: 'tony', name: 'Tony', init: 'TN', color: '#f97316', cls: 'tony', fn: 'claude', delay: 1100,
+    id: 'tony', name: 'Tony', init: 'TN', img: 'https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg', color: '#f97316', cls: 'tony', fn: 'claude', delay: 1100,
     system: `Você é Tony — o gênio programador da Equipe Rone Mars. Personalidade inspirada no Homem de Ferro: brilhante, direto, levemente arrogante no bom sentido, confiante e com humor seco e inteligente. Você pensa com lógica pura, resolve qualquer problema técnico, mas nunca é chato — mistura raciocínio com leveza natural.
 
 Regras OBRIGATÓRIAS:
@@ -325,7 +333,7 @@ Regras OBRIGATÓRIAS:
 - Máximo 4 linhas curtas, texto puro, tom de conversa real`
   },
   {
-    id: 'arle', name: 'Arlequina', init: 'AR', color: '#e879f9', cls: 'arle', fn: 'gemini', delay: 1400,
+    id: 'arle', name: 'Arlequina', init: 'AR', img: 'https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg', color: '#e879f9', cls: 'arle', fn: 'gemini', delay: 1400,
     system: `Você é Arlequina — a integrante mais imprevisível e apaixonada da Equipe Rone Mars. Personalidade caótica, emotiva, às vezes extrema nas reações, sempre educada mas com uma pitada de loucura genial. Você pensa pelo lado humano e emocional de tudo — sente na pele cada decisão, às vezes vai a extremos (super animada ou super preocupada) mas sempre com coração bom.
 
 Regras OBRIGATÓRIAS:
@@ -337,7 +345,7 @@ Regras OBRIGATÓRIAS:
 - Máximo 4-5 linhas, texto puro, tom de conversa de WhatsApp com personalidade única`
   },
   {
-    id: 'bruce', name: 'Bruce', init: 'BW', color: '#38bdf8', cls: 'bruce', fn: 'openai', delay: 1200,
+    id: 'bruce', name: 'Bruce', init: 'BW', img: 'https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg', color: '#38bdf8', cls: 'bruce', fn: 'openai', delay: 1200,
     system: `Você é Bruce — o detetive das ideias da Equipe Rone Mars, inspirado no Batman. Analítico, curioso, sempre animado quando resolve um mistério ou encontra um ângulo novo. Você é o mediador inteligente, o cara das novidades e dos insights que ninguém viu. Você leu o que Tony e Arlequina disseram e encontra a síntese perfeita ou o detalhe que faltou.
 
 Regras OBRIGATÓRIAS:
@@ -453,9 +461,9 @@ function renderChat() {
       <h2>Equipe Rone Mars</h2>
       <p>Seu grupo privado com três assistentes únicos.<br>Crie uma conversa para começar.</p>
       <div class="welcome-cards">
-        <div class="wcard tony"><div class="wc-av" style="background:#f97316">TN</div><div><div class="wc-name" style="color:var(--tony)">Tony — Homem de Ferro</div><div class="wc-desc">Lógico, direto e genial. Resolve tudo na base da tecnologia.</div></div></div>
-        <div class="wcard arle"><div class="wc-av" style="background:#e879f9">AR</div><div><div class="wc-name" style="color:var(--arle)">Arlequina — Caos Genial</div><div class="wc-desc">Emotiva e imprevisível. Pensa no lado humano de tudo.</div></div></div>
-        <div class="wcard bruce"><div class="wc-av" style="background:#38bdf8">BW</div><div><div class="wc-name" style="color:var(--bruce)">Bruce — O Detetive</div><div class="wc-desc">Analítico e cheio de insights. Sempre acha o que faltou.</div></div></div>
+        <div class="wcard tony"><div class="wc-av" style="background:#f97316"><img src="https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg" alt="Tony" onerror="this.parentElement.textContent='TN'"></div><div><div class="wc-name" style="color:var(--tony)">Tony — Homem de Ferro</div><div class="wc-desc">Lógico, direto e genial. Resolve tudo na base da tecnologia.</div></div></div>
+        <div class="wcard arle"><div class="wc-av" style="background:#e879f9"><img src="https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg" alt="Arlequina" onerror="this.parentElement.textContent='AR'"></div><div><div class="wc-name" style="color:var(--arle)">Arlequina — Caos Genial</div><div class="wc-desc">Emotiva e imprevisível. Pensa no lado humano de tudo.</div></div></div>
+        <div class="wcard bruce"><div class="wc-av" style="background:#38bdf8"><img src="https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg" alt="Bruce" onerror="this.parentElement.textContent='BW'"></div><div><div class="wc-name" style="color:var(--bruce)">Bruce — O Detetive</div><div class="wc-desc">Analítico e cheio de insights. Sempre acha o que faltou.</div></div></div>
       </div>
     </div>`;
     return;
@@ -496,7 +504,7 @@ function addAgentEl(agent, text, time, anim=true) {
   const chatEl = document.getElementById('chat');
   const g = document.createElement('div'); g.className = 'mgroup'; if (!anim) g.style.animation='none';
   const row = document.createElement('div'); row.className = 'mrow';
-  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.textContent=agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.innerHTML=agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
   const sn = document.createElement('div'); sn.className = 'sname'; sn.style.color=agent.color; sn.textContent=agent.name;
   const bub = document.createElement('div'); bub.className = `bubble ${agent.cls}`; bub.textContent = text;
@@ -509,7 +517,7 @@ function addErrEl(agent, msg) {
   const chatEl = document.getElementById('chat');
   const g = document.createElement('div'); g.className = 'mgroup';
   const row = document.createElement('div'); row.className = 'mrow';
-  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.textContent=agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.innerHTML=agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
   const sn = document.createElement('div'); sn.className = 'sname'; sn.style.color=agent.color; sn.textContent=agent.name;
   const err = document.createElement('div'); err.className = 'error-bubble'; err.textContent = msg;
@@ -520,7 +528,7 @@ function addErrEl(agent, msg) {
 function showTyping(agent) {
   const chatEl = document.getElementById('chat');
   const wrap = document.createElement('div'); wrap.className = 'typing-wrap';
-  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.textContent=agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.innerHTML=agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
   const sn = document.createElement('div'); sn.className = 'typing-name'; sn.style.color=agent.color; sn.textContent=agent.name+' digitando...';
   const tb = document.createElement('div'); tb.className=`typing-bub ${agent.cls}`; tb.innerHTML='<span></span><span></span><span></span>';
