@@ -194,26 +194,29 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 
 /* INPUT */
 .input-area {
-  padding: 12px 20px 16px; background: var(--surface); border-top: 1px solid var(--border);
-  display: flex; gap: 10px; align-items: flex-end;
+  padding: 12px 20px 14px; background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 6px;
 }
+.input-row { display: flex; gap: 10px; align-items: flex-end; }
+.input-hint { font-size: 10px; color: var(--text3); text-align: center; opacity: 0.6; }
 .ibox {
-  flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 14px;
-  color: var(--text); font-family: inherit; font-size: 14px; padding: 11px 16px;
-  resize: none; max-height: 130px; min-height: 44px; line-height: 1.55; outline: none;
-  transition: border-color 0.15s;
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 16px;
+  color: var(--text); font-family: inherit; font-size: 14px; padding: 12px 18px;
+  resize: none; max-height: 130px; min-height: 46px; line-height: 1.55; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .ibox::placeholder { color: var(--text3); }
-.ibox:focus { border-color: var(--you); }
+.ibox:focus { border-color: var(--you); box-shadow: 0 0 0 3px rgba(167,139,250,0.12); }
 
 .sbtn {
-  width: 44px; height: 44px; border-radius: 12px; background: var(--you);
+  width: 46px; height: 46px; border-radius: 14px; background: var(--you);
   border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: opacity 0.2s, transform 0.1s;
+  flex-shrink: 0; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(167,139,250,0.35);
 }
-.sbtn:hover { opacity: 0.88; }
+.sbtn:hover { opacity: 0.88; box-shadow: 0 4px 14px rgba(167,139,250,0.45); }
 .sbtn:active { transform: scale(0.93); }
-.sbtn:disabled { opacity: 0.28; cursor: not-allowed; }
+.sbtn:disabled { opacity: 0.28; cursor: not-allowed; box-shadow: none; }
 .sbtn svg { width: 17px; height: 17px; fill: #fff; }
 
 /* OVERLAY MOBILE */
@@ -293,12 +296,14 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
     <div class="chat" id="chat"></div>
 
     <div class="input-area">
-      <textarea class="ibox" id="ibox" placeholder="Manda uma mensagem para a equipe..." rows="1"></textarea>
-      <button class="sbtn" id="sbtn" onclick="send()">
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-      </button>
+      <div class="input-row">
+        <textarea class="ibox" id="ibox" placeholder="Manda uma mensagem para a equipe..." rows="1"></textarea>
+        <button class="sbtn" id="sbtn" onclick="send()">
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">Enter para enviar &nbsp;·&nbsp; Shift+Enter para nova linha</div>
     </div>
-  </div>
 
 </div>
 <script>
@@ -623,7 +628,7 @@ async function send() {
       const t = now();
       const bruceR = await callEdge(AGENTS[2].fn, {
         system: AGENTS[2].system,
-        userMsg: `Histórico da conversa:\n${hist}\n\nRone disse: "${text}"\n${tonyR?`Tony disse: "${tonyR}"\n`:''}\${arleR?`Arlequina disse: "${arleR}"\n`:''}Responda como Bruce, encontrando o insight ou síntese que faltou:`
+        userMsg: `Histórico da conversa:\n${hist}\n\nRone disse: "${text}"\n${tonyR?`Tony disse: "${tonyR}"\n`:''}${arleR?`Arlequina disse: "${arleR}"\n`:''}Responda como Bruce, encontrando o insight ou síntese que faltou:`
       });
       conv.messages.push({ role:'agent', agent:'bruce', text:bruceR, time:t });
       saveConvs(convs);
