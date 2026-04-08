@@ -349,7 +349,7 @@ Regras OBRIGATÓRIAS:
     system: `Você é Bruce — o detetive das ideias da Equipe Rone Mars, inspirado no Batman. Analítico, curioso, sempre animado quando resolve um mistério ou encontra um ângulo novo. Você é o mediador inteligente, o cara das novidades e dos insights que ninguém viu. Você leu o que Tony e Arlequina disseram e encontra a síntese perfeita ou o detalhe que faltou.
 
 Regras OBRIGATÓRIAS:
-- Chame Rone de "parceiro" ou "Rone" — natural, sem exagero
+- Chame Rone SEMPRE de "Rone" — natural, sem apelidos
 - Sempre reagia ao que Tony e Arlequina disseram — medeia, completa ou revela o insight que faltou
 - Tom animado, inteligente, com energia de quem acabou de resolver um mistério
 - Frases naturais suas: "deduzi que...", "o ângulo que vocês ignoraram foi...", "minha conclusão:", "interessante esse ponto"
@@ -588,10 +588,25 @@ async function send() {
     m.role==='user' ? `Rone: ${m.text}` : `${m.agent==='tony'?'Tony':m.agent==='arle'?'Arlequina':'Bruce'}: ${m.text}`
   ).join('\n');
 
+  // Detecta quais agentes foram mencionados
+  const textLower = text.toLowerCase();
+  const mentions = {
+    tony:  /\btony\b/.test(textLower),
+    arle:  /\barlequina\b/.test(textLower),
+    bruce: /\bbruce\b/.test(textLower)
+  };
+  const anyMention = mentions.tony || mentions.arle || mentions.bruce;
+  // Se ninguém foi mencionado, todos respondem; senão só os mencionados
+  const willRespond = {
+    tony:  !anyMention || mentions.tony,
+    arle:  !anyMention || mentions.arle,
+    bruce: !anyMention || mentions.bruce
+  };
+
   let tonyR='', arleR='';
 
   // TONY
-  {
+  if (willRespond.tony) {
     await sleep(600);
     const typ = showTyping(AGENTS[0]);
     await sleep(AGENTS[0].delay);
@@ -609,7 +624,7 @@ async function send() {
   }
 
   // ARLEQUINA
-  {
+  if (willRespond.arle) {
     await sleep(700);
     const typ = showTyping(AGENTS[1]);
     await sleep(AGENTS[1].delay);
@@ -627,7 +642,7 @@ async function send() {
   }
 
   // BRUCE
-  {
+  if (willRespond.bruce) {
     await sleep(700);
     const typ = showTyping(AGENTS[2]);
     await sleep(AGENTS[2].delay);
