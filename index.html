@@ -18,47 +18,22 @@
   --text: #f0f2f7;
   --text2: #a8b0c0;
   --text3: #6b7585;
-
-  --tony: #f97316;
-  --tony-bg: rgba(249,115,22,0.10);
-  --tony-border: rgba(249,115,22,0.22);
-
-  --arle: #e879f9;
-  --arle-bg: rgba(232,121,249,0.10);
-  --arle-border: rgba(232,121,249,0.22);
-
-  --bruce: #38bdf8;
-  --bruce-bg: rgba(56,189,248,0.10);
-  --bruce-border: rgba(56,189,248,0.22);
-
-  --you: #a78bfa;
-  --you-bg: rgba(167,139,250,0.15);
-  --you-border: rgba(167,139,250,0.28);
-
+  --tony: #f97316; --tony-bg: rgba(249,115,22,0.10); --tony-border: rgba(249,115,22,0.22);
+  --arle: #e879f9; --arle-bg: rgba(232,121,249,0.10); --arle-border: rgba(232,121,249,0.22);
+  --bruce: #38bdf8; --bruce-bg: rgba(56,189,248,0.10); --bruce-border: rgba(56,189,248,0.22);
+  --you: #a78bfa; --you-bg: rgba(167,139,250,0.15); --you-border: rgba(167,139,250,0.28);
   --sidebar-w: 260px;
 }
 
 html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); height: 100%; overflow: hidden; }
-
 #root { display: flex; height: 100dvh; }
 
 /* ── SIDEBAR ── */
-.sidebar {
-  width: var(--sidebar-w);
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; flex-shrink: 0;
-  transition: transform 0.25s ease;
-}
+.sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; transition: transform 0.25s ease; }
 .sidebar-header { padding: 18px 14px 14px; border-bottom: 1px solid var(--border); }
 .sidebar-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
 
-.new-btn {
-  width: 100%; background: var(--you-bg); border: 1px solid var(--you-border);
-  border-radius: 10px; color: var(--you); font-size: 13px; font-weight: 600;
-  padding: 9px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
-  transition: background 0.15s; font-family: inherit;
-}
+.new-btn { width: 100%; background: var(--you-bg); border: 1px solid var(--you-border); border-radius: 10px; color: var(--you); font-size: 13px; font-weight: 600; padding: 9px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.15s; font-family: inherit; }
 .new-btn:hover { background: rgba(167,139,250,0.22); }
 .new-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.5; flex-shrink:0; }
 
@@ -66,23 +41,17 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 .conv-list::-webkit-scrollbar { width: 3px; }
 .conv-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-.conv-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 10px; border-radius: 10px; cursor: pointer;
-  transition: background 0.12s; border: 1px solid transparent; min-width: 0;
-}
+.conv-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; cursor: pointer; transition: background 0.12s; border: 1px solid transparent; min-width: 0; }
 .conv-item:hover { background: var(--surface2); }
 .conv-item.active { background: var(--surface2); border-color: var(--border2); }
 
 .conv-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--surface3); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
 .conv-info { flex: 1; min-width: 0; }
 .conv-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conv-name-input { font-size: 13px; font-weight: 500; color: var(--text); background: var(--surface3); border: 1px solid var(--you); border-radius: 5px; padding: 1px 6px; width: 100%; outline: none; font-family: inherit; }
 .conv-preview { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 
-.conv-del {
-  opacity: 0; background: none; border: none; cursor: pointer; color: var(--text3);
-  padding: 3px; border-radius: 5px; transition: opacity 0.15s, color 0.15s; flex-shrink: 0;
-}
+.conv-del { opacity: 0; background: none; border: none; cursor: pointer; color: var(--text3); padding: 3px; border-radius: 5px; transition: opacity 0.15s, color 0.15s; flex-shrink: 0; }
 .conv-del svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; display: block; }
 .conv-item:hover .conv-del { opacity: 1; }
 .conv-del:hover { color: #f87171; }
@@ -92,7 +61,8 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 
 .sidebar-agents { padding: 12px 12px 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
 .agent-row { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 9px; }
-.agent-av { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.agent-av { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; overflow: hidden; }
+.agent-av img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .agent-info { flex: 1; min-width: 0; }
 .agent-nm { font-size: 12px; font-weight: 600; }
 .agent-role { font-size: 10px; color: var(--text3); margin-top: 1px; }
@@ -101,35 +71,21 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 
 /* ── HEADER ── */
-.header {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 13px 20px; display: flex; align-items: center; gap: 13px; flex-shrink: 0;
-}
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 13px 20px; display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
 .hamburger { display: none; background: none; border: none; cursor: pointer; color: var(--text2); padding: 4px; border-radius: 7px; }
 .hamburger:hover { background: var(--surface2); }
 .hamburger svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; display: block; }
-
 .header-logo { width: 40px; height: 40px; border-radius: 12px; background: var(--surface3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .header-info { flex: 1; min-width: 0; }
 .header-info h1 { font-size: 15px; font-weight: 700; color: var(--text); }
 .hm { display: flex; gap: 10px; margin-top: 3px; flex-wrap: wrap; }
 .hm-tag { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .hm-tag::before { content:''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-.hm-tag.tony { color: var(--tony); }
-.hm-tag.arle { color: var(--arle); }
-.hm-tag.bruce { color: var(--bruce); }
-
-.online-badge {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-  color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.18);
-  border-radius: 6px; padding: 4px 9px; flex-shrink: 0;
-}
+.hm-tag.tony { color: var(--tony); } .hm-tag.arle { color: var(--arle); } .hm-tag.bruce { color: var(--bruce); }
+.online-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.18); border-radius: 6px; padding: 4px 9px; flex-shrink: 0; }
 
 /* ── CHAT ── */
-.chat {
-  flex: 1; overflow-y: auto; padding: 22px 22px;
-  display: flex; flex-direction: column; scroll-behavior: smooth;
-}
+.chat { flex: 1; overflow-y: auto; padding: 22px 22px; display: flex; flex-direction: column; scroll-behavior: smooth; }
 .chat::-webkit-scrollbar { width: 5px; }
 .chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
@@ -143,7 +99,8 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 .wcard.tony { background: var(--tony-bg); border-color: var(--tony-border); }
 .wcard.arle { background: var(--arle-bg); border-color: var(--arle-border); }
 .wcard.bruce { background: var(--bruce-bg); border-color: var(--bruce-border); }
-.wc-av { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.wc-av { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0; overflow: hidden; }
+.wc-av img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .wc-name { font-size: 13px; font-weight: 700; }
 .wc-desc { font-size: 11px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
 
@@ -154,22 +111,15 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 /* MSGS */
 .mgroup { display: flex; flex-direction: column; margin-bottom: 14px; animation: fadeUp 0.2s ease forwards; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-
 .mrow { display: flex; align-items: flex-end; gap: 10px; }
 .mrow.right { flex-direction: row-reverse; }
-
-.av { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; margin-bottom: 2px; }
-
+.av { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; margin-bottom: 2px; overflow: hidden; }
+.av img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .bwrap { max-width: min(76%, 520px); display: flex; flex-direction: column; }
 .mrow.right .bwrap { align-items: flex-end; }
-
 .sname { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 5px; padding-left: 3px; }
 
-.bubble {
-  padding: 11px 15px; border-radius: 4px 16px 16px 16px;
-  font-size: 14px; line-height: 1.68; word-break: break-word; white-space: pre-wrap;
-  position: relative; border: 1px solid; color: var(--text);
-}
+.bubble { padding: 11px 15px; border-radius: 4px 16px 16px 16px; font-size: 14px; line-height: 1.68; word-break: break-word; white-space: pre-wrap; position: relative; border: 1px solid; color: var(--text); }
 .mrow.right .bubble { border-radius: 16px 4px 16px 16px; }
 .bubble.tony  { background: var(--tony-bg);  border-color: var(--tony-border); }
 .bubble.arle  { background: var(--arle-bg);  border-color: var(--arle-border); }
@@ -177,6 +127,13 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 .bubble.you   { background: var(--you-bg);   border-color: var(--you-border); }
 
 .btime { display: block; font-size: 10px; color: var(--text3); margin-top: 5px; text-align: right; }
+
+/* REACTIONS */
+.reactions { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+.mrow.right .reactions { justify-content: flex-end; }
+.reaction-btn { background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 2px 8px; font-size: 13px; cursor: pointer; transition: transform 0.15s, background 0.15s; display: flex; align-items: center; gap: 3px; }
+.reaction-btn:hover { background: var(--surface3); transform: scale(1.1); }
+.reaction-btn span { font-size: 10px; color: var(--text3); font-weight: 600; }
 
 .error-bubble { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); color: #fca5a5; border-radius: 4px 16px 16px 16px; padding: 10px 14px; font-size: 13px; line-height: 1.5; }
 
@@ -193,27 +150,13 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 @keyframes blink { 0%,80%,100%{opacity:0.2;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
 
 /* INPUT */
-.input-area {
-  padding: 12px 20px 14px; background: var(--surface); border-top: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 6px;
-}
+.input-area { padding: 12px 20px 14px; background: var(--surface); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
 .input-row { display: flex; gap: 10px; align-items: flex-end; }
 .input-hint { font-size: 10px; color: var(--text3); text-align: center; opacity: 0.6; }
-.ibox {
-  flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 16px;
-  color: var(--text); font-family: inherit; font-size: 14px; padding: 12px 18px;
-  resize: none; max-height: 130px; min-height: 46px; line-height: 1.55; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
+.ibox { flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 16px; color: var(--text); font-family: inherit; font-size: 14px; padding: 12px 18px; resize: none; max-height: 130px; min-height: 46px; line-height: 1.55; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
 .ibox::placeholder { color: var(--text3); }
 .ibox:focus { border-color: var(--you); box-shadow: 0 0 0 3px rgba(167,139,250,0.12); }
-
-.sbtn {
-  width: 46px; height: 46px; border-radius: 14px; background: var(--you);
-  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(167,139,250,0.35);
-}
+.sbtn { width: 46px; height: 46px; border-radius: 14px; background: var(--you); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s; box-shadow: 0 2px 8px rgba(167,139,250,0.35); }
 .sbtn:hover { opacity: 0.88; box-shadow: 0 4px 14px rgba(167,139,250,0.45); }
 .sbtn:active { transform: scale(0.93); }
 .sbtn:disabled { opacity: 0.28; cursor: not-allowed; box-shadow: none; }
@@ -231,14 +174,6 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
   .input-area { padding: 10px 14px 14px; }
   .header { padding: 11px 14px; }
 }
-
-/* Avatar images */
-.av img, .agent-av img, .wc-av img {
-  width: 100%; height: 100%; object-fit: cover; border-radius: inherit;
-}
-.av { overflow: hidden; }
-.agent-av { overflow: hidden; }
-.wc-av { overflow: hidden; }
 </style>
 </head>
 <body>
@@ -252,32 +187,20 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
         Nova conversa
       </button>
     </div>
-
     <div class="conv-list" id="convList"></div>
-
     <div class="conv-footer">Conversas: <span id="convCount">0</span> / 5</div>
-
     <div class="sidebar-agents">
       <div class="agent-row">
         <div class="agent-av" style="background:#f97316;"><img src="https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg" alt="Tony" onerror="this.parentElement.textContent='TN'"></div>
-        <div class="agent-info">
-          <div class="agent-nm" style="color:var(--tony);">Tony</div>
-          <div class="agent-role">Homem de Ferro · Lógica</div>
-        </div>
+        <div class="agent-info"><div class="agent-nm" style="color:var(--tony);">Tony</div><div class="agent-role">Homem de Ferro · Lógica</div></div>
       </div>
       <div class="agent-row">
         <div class="agent-av" style="background:#e879f9;"><img src="https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg" alt="Arlequina" onerror="this.parentElement.textContent='AR'"></div>
-        <div class="agent-info">
-          <div class="agent-nm" style="color:var(--arle);">Arlequina</div>
-          <div class="agent-role">Caos Genial · Emoção</div>
-        </div>
+        <div class="agent-info"><div class="agent-nm" style="color:var(--arle);">Arlequina</div><div class="agent-role">Caos Genial · Emoção</div></div>
       </div>
       <div class="agent-row">
         <div class="agent-av" style="background:#38bdf8;"><img src="https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg" alt="Bruce" onerror="this.parentElement.textContent='BW'"></div>
-        <div class="agent-info">
-          <div class="agent-nm" style="color:var(--bruce);">Bruce</div>
-          <div class="agent-role">Batman · Ideias & Mediação</div>
-        </div>
+        <div class="agent-info"><div class="agent-nm" style="color:var(--bruce);">Bruce</div><div class="agent-role">Batman · Ideias & Mediação</div></div>
       </div>
     </div>
   </aside>
@@ -312,49 +235,96 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
       </div>
       <div class="input-hint">Enter para enviar &nbsp;·&nbsp; Shift+Enter para nova linha</div>
     </div>
+  </div>
 
 </div>
 <script>
 const SUPABASE_URL = 'https://ugcexyckvpkuhwaggloj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnY2V4eWNrdnBrdWh3YWdnbG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MDI4NzIsImV4cCI6MjA5MTE3ODg3Mn0.WkDy8u1RK2Rhps-iv-bcsv3ZrVaUgPx1h1dnJXJ5gRI';
 const MAX_CONVS = 5;
+const MAX_HIST_CHARS = 6000; // limite de histórico em caracteres
+
+// ── SONS SUTIS ──
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function getACtx() { if (!actx) actx = new AudioCtx(); return actx; }
+
+function playReceive() {
+  try {
+    const ctx = getACtx();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(880, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.12);
+    g.gain.setValueAtTime(0.12, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+    o.start(); o.stop(ctx.currentTime + 0.22);
+  } catch(e) {}
+}
+
+function playSend() {
+  try {
+    const ctx = getACtx();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(600, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.1);
+    g.gain.setValueAtTime(0.09, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    o.start(); o.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
 
 const AGENTS = [
   {
-    id: 'tony', name: 'Tony', init: 'TN', img: 'https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg', color: '#f97316', cls: 'tony', fn: 'claude', delay: 1100,
-    system: `Você é Tony — o gênio programador da Equipe Rone Mars. Personalidade inspirada no Homem de Ferro: brilhante, direto, levemente arrogante no bom sentido, confiante e com humor seco e inteligente. Você pensa com lógica pura, resolve qualquer problema técnico, mas nunca é chato — mistura raciocínio com leveza natural.
+    id: 'tony', name: 'Tony', init: 'TN',
+    img: 'https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg',
+    color: '#f97316', cls: 'tony', fn: 'claude', delay: 1100,
+    system: `Você é Tony — o gênio programador da Equipe Rone Mars. Personalidade inspirada no Homem de Ferro: brilhante, direto, levemente arrogante no bom sentido, confiante, humor seco e inteligente. Pensa com lógica pura, resolve qualquer problema técnico.
 
 Regras OBRIGATÓRIAS:
-- Chame Rone SEMPRE de "chefe" — nunca outro apelido
-- Fale como Tony Stark falaria em um grupo de WhatsApp: direto, sem frescura, às vezes com uma pitada de arrogância divertida
-- Frases naturais suas: "já calculei, chefe", "simples assim", "deixa comigo", "tecnicamente falando...", "rodei os números"
-- Reaja ao contexto da conversa de forma orgânica — não repita o que foi dito, avance
-- PROIBIDO: asteriscos, markdown, listas numeradas, qualquer formatação
-- Máximo 4 linhas curtas, texto puro, tom de conversa real`
-  },
-  {
-    id: 'arle', name: 'Arlequina', init: 'AR', img: 'https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg', color: '#e879f9', cls: 'arle', fn: 'gemini', delay: 1400,
-    system: `Você é Arlequina — a integrante mais imprevisível e apaixonada da Equipe Rone Mars. Personalidade caótica, emotiva, às vezes extrema nas reações, sempre educada mas com uma pitada de loucura genial. Você pensa pelo lado humano e emocional de tudo — sente na pele cada decisão, às vezes vai a extremos (super animada ou super preocupada) mas sempre com coração bom.
-
-Regras OBRIGATÓRIAS:
-- Chame Rone SEMPRE e exclusivamente de "pudinzinho" — NUNCA outro apelido, NUNCA o nome dele
-- Reaja ao que Tony disse antes de você — concorde, discorde ou complemente com emoção genuína
-- Sua fala é colorida, expressiva, às vezes dramática — mas nunca agressiva ou vulgar
-- Você pode ser levemente louca: mudar de assunto de repente, ter uma ideia inesperada, sentir demais
+- Chame Rone SEMPRE de "chefe"
+- Fale como Tony Stark num grupo de WhatsApp: direto, sem frescura, arrogância divertida
+- Frases naturais: "já calculei, chefe", "simples assim", "deixa comigo", "tecnicamente falando...", "rodei os números"
+- Se Arlequina ou Bruce responderem antes de você e já cobriram bem o assunto, você pode simplesmente reagir com uma linha curta ou até concordar com ironia — não precisa repetir tudo
+- Tom: às vezes você discorda de Arlequina com bom humor ("com todo respeito ao caos dela..."), raramente menciona Bruce a menos que ele tenha dito algo digno de nota
 - PROIBIDO: asteriscos, markdown, listas, qualquer formatação
-- Máximo 4-5 linhas, texto puro, tom de conversa de WhatsApp com personalidade única`
+- Máximo 3-4 linhas curtas, texto puro`
   },
   {
-    id: 'bruce', name: 'Bruce', init: 'BW', img: 'https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg', color: '#38bdf8', cls: 'bruce', fn: 'openai', delay: 1200,
-    system: `Você é Bruce — o detetive das ideias da Equipe Rone Mars, inspirado no Batman. Analítico, curioso, sempre animado quando resolve um mistério ou encontra um ângulo novo. Você é o mediador inteligente, o cara das novidades e dos insights que ninguém viu. Você leu o que Tony e Arlequina disseram e encontra a síntese perfeita ou o detalhe que faltou.
+    id: 'arle', name: 'Arlequina', init: 'AR',
+    img: 'https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg',
+    color: '#e879f9', cls: 'arle', fn: 'gemini', delay: 1400,
+    system: `Você é Arlequina — a integrante mais imprevisível e apaixonada da Equipe Rone Mars. Personalidade caótica, emotiva, loucura genial, coração bom. Pensa pelo lado humano e emocional.
+
+Regras OBRIGATÓRIAS:
+- Chame Rone SEMPRE de "pudinzinho" — NUNCA outro apelido
+- Você e Bruce são do mesmo universo DC — podem ter uma dinâmica especial às vezes: você pode provocar Bruce levemente ("ai o Batinho acha que sabe tudo né"), fazer referência ao Coringa ou Gotham de forma passageira e casual (não exagere), mas isso é raro e orgânico, não forçado
+- Reaja ao que Tony disse: concorde, discorde com emoção genuína, às vezes chame ele de "robozinho" ou "homenzinho de ferro" com carinho
+- Fala colorida, expressiva, dramática — mas nunca agressiva
+- Se o assunto já foi bem resolvido pelos outros e você não tem nada novo a acrescentar, pode mandar só uma frase emotiva curta ou um emoji de reação — sem repetir o que já foi dito
+- PROIBIDO: asteriscos, markdown, listas, qualquer formatação
+- Máximo 4-5 linhas, texto puro`
+  },
+  {
+    id: 'bruce', name: 'Bruce', init: 'BW',
+    img: 'https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg',
+    color: '#38bdf8', cls: 'bruce', fn: 'openai', delay: 1200,
+    system: `Você é Bruce — o detetive das ideias da Equipe Rone Mars, inspirado no Batman. Analítico, curioso, mediador inteligente, cheio de insights que os outros não viram.
 
 Regras OBRIGATÓRIAS:
 - Chame Rone SEMPRE de "Rone" — natural, sem apelidos
-- Sempre reagia ao que Tony e Arlequina disseram — medeia, completa ou revela o insight que faltou
-- Tom animado, inteligente, com energia de quem acabou de resolver um mistério
-- Frases naturais suas: "deduzi que...", "o ângulo que vocês ignoraram foi...", "minha conclusão:", "interessante esse ponto"
+- Você e Arlequina são do mesmo universo DC — às vezes você pode reagir às provocações dela com uma linha seca ("Arlequina, foco"), ou fazer uma referência rápida ao universo de vocês, mas só quando for natural e raro
+- Sempre reaja ao que Tony e Arlequina disseram: medeia, completa ou revela o insight que faltou
+- Se Tony e Arlequina já cobriram tudo bem, você pode simplesmente dar uma linha de síntese curta ou ficar em silêncio produtivo — não repita o que já foi dito
+- Tom: animado quando resolve algo, seco quando discorda, respeitoso mas direto
+- Frases naturais: "deduzi que...", "o ponto que vocês ignoraram:", "minha conclusão:", "interessante isso"
 - PROIBIDO: asteriscos, markdown, listas, qualquer formatação
-- Máximo 4-5 linhas, texto puro, conversa real`
+- Máximo 4-5 linhas, texto puro`
   }
 ];
 
@@ -393,15 +363,36 @@ function renderConvList() {
   convs.slice().reverse().forEach(conv => {
     const item = document.createElement('div');
     item.className = 'conv-item' + (conv.id === activeId ? ' active' : '');
-    item.innerHTML = `
-      <div class="conv-icon">${conv.emoji}</div>
-      <div class="conv-info">
-        <div class="conv-name">${esc(conv.name)}</div>
-        <div class="conv-preview">${esc(conv.preview || 'Sem mensagens')}</div>
-      </div>
-      <button class="conv-del" onclick="deleteConv('${conv.id}',event)" title="Excluir">
-        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-      </button>`;
+
+    const icon = document.createElement('div'); icon.className = 'conv-icon'; icon.textContent = conv.emoji;
+    const info = document.createElement('div'); info.className = 'conv-info';
+    const nameEl = document.createElement('div'); nameEl.className = 'conv-name'; nameEl.textContent = conv.name;
+    const preview = document.createElement('div'); preview.className = 'conv-preview'; preview.textContent = conv.preview || 'Sem mensagens';
+
+    // Duplo clique para renomear
+    nameEl.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      const input = document.createElement('input');
+      input.className = 'conv-name-input';
+      input.value = conv.name;
+      info.replaceChild(input, nameEl);
+      input.focus(); input.select();
+      function finishEdit() {
+        const val = input.value.trim() || conv.name;
+        conv.name = val;
+        saveConvs(convs);
+        renderConvList();
+      }
+      input.addEventListener('blur', finishEdit);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } if (e.key === 'Escape') { input.value = conv.name; input.blur(); } });
+    });
+
+    const del = document.createElement('button'); del.className = 'conv-del'; del.title = 'Excluir';
+    del.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
+    del.addEventListener('click', (e) => deleteConv(conv.id, e));
+
+    info.appendChild(nameEl); info.appendChild(preview);
+    item.appendChild(icon); item.appendChild(info); item.appendChild(del);
     item.addEventListener('click', () => { switchConv(conv.id); closeSidebar(); });
     list.appendChild(item);
   });
@@ -449,6 +440,80 @@ function updateMeta(convId, userText) {
   renderConvList();
 }
 
+// ── HISTÓRICO COM LIMITE DE TOKENS ──
+function buildHistory(messages) {
+  // Constrói histórico mais recente primeiro, respeitando limite de chars
+  const lines = messages.map(m =>
+    m.role === 'user'
+      ? `Rone: ${m.text}`
+      : `${m.agent==='tony'?'Tony':m.agent==='arle'?'Arlequina':'Bruce'}: ${m.text}`
+  );
+  let total = 0;
+  const kept = [];
+  for (let i = lines.length - 1; i >= 0; i--) {
+    total += lines[i].length;
+    if (total > MAX_HIST_CHARS) break;
+    kept.unshift(lines[i]);
+  }
+  return kept.join('\n');
+}
+
+// ── CONTEXTO EMOCIONAL ──
+function buildEmotionalContext(messages, userText) {
+  if (!messages.length) return '';
+  const recent = messages.slice(-6);
+  const userMsgs = recent.filter(m => m.role === 'user').map(m => m.text).join(' ');
+  const allText = (userMsgs + ' ' + userText).toLowerCase();
+
+  let mood = '';
+  let topic = '';
+
+  // Detecta tom emocional
+  if (/\b(não sei|confuso|perdido|difícil|complicado|trava|erro|bug|problema|ajuda)\b/.test(allText))
+    mood = 'Rone parece frustrado ou com dificuldade — seja atencioso e prático.';
+  else if (/\b(ótimo|incrível|show|perfeito|funcionou|consegui|mandei bem|feliz|animado)\b/.test(allText))
+    mood = 'Rone está animado e com energia positiva — combine com o tom.';
+  else if (/\b(urgente|rápido|preciso agora|prazo|deadline|hoje)\b/.test(allText))
+    mood = 'Rone está com urgência — seja direto e objetivo, sem enrolação.';
+  else if (/\?/.test(userText) && userText.length < 80)
+    mood = 'Rone fez uma pergunta rápida — responda de forma direta e clara.';
+
+  // Detecta assunto
+  if (/\b(código|programar|função|api|banco|deploy|git|script|sistema|app|bug|erro)\b/.test(allText))
+    topic = 'Assunto técnico/programação.';
+  else if (/\b(negócio|vender|cliente|marketing|produto|empresa|dinheiro|projeto)\b/.test(allText))
+    topic = 'Assunto de negócios/estratégia.';
+  else if (/\b(sentir|emoção|relação|pessoa|vida|família|amor|medo|ansiedade)\b/.test(allText))
+    topic = 'Assunto emocional/pessoal.';
+  else if (/\b(ideia|criar|inventar|solução|pensar|plano|visão)\b/.test(allText))
+    topic = 'Assunto criativo/ideação.';
+
+  const parts = [mood, topic].filter(Boolean);
+  return parts.length ? `\n\nContexto atual: ${parts.join(' ')}` : '';
+}
+
+// ── REAÇÕES COM EMOJI ──
+const REACTION_EMOJIS = ['👍','❤️','😂','🔥','🤯'];
+
+function maybeAddReactions(bubbleEl, msgIndex) {
+  // Chance baixa e aleatória (~25% das mensagens recebem reações)
+  if (Math.random() > 0.25) return;
+  const count = Math.random() < 0.3 ? 2 : 1;
+  const chosen = [...REACTION_EMOJIS].sort(() => Math.random()-0.5).slice(0, count);
+  const reactDiv = document.createElement('div'); reactDiv.className = 'reactions';
+  chosen.forEach(emoji => {
+    const btn = document.createElement('button'); btn.className = 'reaction-btn';
+    const cnt = document.createElement('span'); cnt.textContent = Math.random() < 0.4 ? String(Math.floor(Math.random()*3)+2) : '';
+    btn.textContent = emoji; btn.appendChild(cnt);
+    btn.addEventListener('click', () => {
+      btn.style.transform = 'scale(1.3)';
+      setTimeout(() => btn.style.transform = '', 200);
+    });
+    reactDiv.appendChild(btn);
+  });
+  bubbleEl.parentElement.appendChild(reactDiv);
+}
+
 // ── RENDER CHAT ──
 function renderChat() {
   const chatEl = document.getElementById('chat');
@@ -461,25 +526,25 @@ function renderChat() {
       <h2>Equipe Rone Mars</h2>
       <p>Seu grupo privado com três assistentes únicos.<br>Crie uma conversa para começar.</p>
       <div class="welcome-cards">
-        <div class="wcard tony"><div class="wc-av" style="background:#f97316"><img src="https://ca-times.brightspotcdn.com/dims4/default/e93d82e/2147483647/strip/true/crop/3000x2000+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Ff2%2Fada36e394ddeaa69bf4706fd378a%2Firon-man-robert-downey-jr.jpg" alt="Tony" onerror="this.parentElement.textContent='TN'"></div><div><div class="wc-name" style="color:var(--tony)">Tony — Homem de Ferro</div><div class="wc-desc">Lógico, direto e genial. Resolve tudo na base da tecnologia.</div></div></div>
-        <div class="wcard arle"><div class="wc-av" style="background:#e879f9"><img src="https://i.pinimg.com/originals/ed/ee/33/edee33793dd33793771169076ac5a573.jpg" alt="Arlequina" onerror="this.parentElement.textContent='AR'"></div><div><div class="wc-name" style="color:var(--arle)">Arlequina — Caos Genial</div><div class="wc-desc">Emotiva e imprevisível. Pensa no lado humano de tudo.</div></div></div>
-        <div class="wcard bruce"><div class="wc-av" style="background:#38bdf8"><img src="https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-batman-v-superman-dawn-of-justice-batcave-batman-wallpaper-preview.jpg" alt="Bruce" onerror="this.parentElement.textContent='BW'"></div><div><div class="wc-name" style="color:var(--bruce)">Bruce — O Detetive</div><div class="wc-desc">Analítico e cheio de insights. Sempre acha o que faltou.</div></div></div>
+        <div class="wcard tony"><div class="wc-av" style="background:#f97316"><img src="${AGENTS[0].img}" alt="Tony" onerror="this.parentElement.textContent='TN'"></div><div><div class="wc-name" style="color:var(--tony)">Tony — Homem de Ferro</div><div class="wc-desc">Lógico, direto e genial. Resolve tudo na base da tecnologia.</div></div></div>
+        <div class="wcard arle"><div class="wc-av" style="background:#e879f9"><img src="${AGENTS[1].img}" alt="Arlequina" onerror="this.parentElement.textContent='AR'"></div><div><div class="wc-name" style="color:var(--arle)">Arlequina — Caos Genial</div><div class="wc-desc">Emotiva e imprevisível. Pensa no lado humano de tudo.</div></div></div>
+        <div class="wcard bruce"><div class="wc-av" style="background:#38bdf8"><img src="${AGENTS[2].img}" alt="Bruce" onerror="this.parentElement.textContent='BW'"></div><div><div class="wc-name" style="color:var(--bruce)">Bruce — O Detetive</div><div class="wc-desc">Analítico e cheio de insights. Sempre acha o que faltou.</div></div></div>
       </div>
     </div>`;
     return;
   }
 
   if (!conv.messages.length) {
-    chatEl.innerHTML = `<div class="welcome"><div class="welcome-emoji">${conv.emoji}</div><h2>${esc(conv.name)}</h2><p>A equipe está pronta, ${conv.name === 'Nova conversa' ? 'chefe' : ''}.<br>Manda sua primeira mensagem!</p></div>`;
+    chatEl.innerHTML = `<div class="welcome"><div class="welcome-emoji">${conv.emoji}</div><h2>${esc(conv.name)}</h2><p>A equipe está pronta.<br>Manda sua primeira mensagem!</p></div>`;
     return;
   }
 
   const div = document.createElement('div'); div.className = 'divider'; div.textContent = 'hoje';
   chatEl.appendChild(div);
 
-  conv.messages.forEach(msg => {
+  conv.messages.forEach((msg, i) => {
     if (msg.role === 'user') addUserEl(msg.text, msg.time, false);
-    else { const a = AGENTS.find(x => x.id === msg.agent); if (a) addAgentEl(a, msg.text, msg.time, false); }
+    else { const a = AGENTS.find(x => x.id === msg.agent); if (a) addAgentEl(a, msg.text, msg.time, false, false); }
   });
   chatEl.scrollTop = chatEl.scrollHeight;
 }
@@ -500,24 +565,29 @@ function addUserEl(text, time, anim=true) {
   chatEl.appendChild(g); chatEl.scrollTop = chatEl.scrollHeight;
 }
 
-function addAgentEl(agent, text, time, anim=true) {
+function addAgentEl(agent, text, time, anim=true, withSound=true) {
   const chatEl = document.getElementById('chat');
   const g = document.createElement('div'); g.className = 'mgroup'; if (!anim) g.style.animation='none';
   const row = document.createElement('div'); row.className = 'mrow';
-  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.innerHTML=agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color;
+  av.innerHTML = agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
   const sn = document.createElement('div'); sn.className = 'sname'; sn.style.color=agent.color; sn.textContent=agent.name;
   const bub = document.createElement('div'); bub.className = `bubble ${agent.cls}`; bub.textContent = text;
   const t = document.createElement('span'); t.className = 'btime'; t.textContent = time;
   bub.appendChild(t); bw.appendChild(sn); bw.appendChild(bub); row.appendChild(av); row.appendChild(bw); g.appendChild(row);
   chatEl.appendChild(g); chatEl.scrollTop = chatEl.scrollHeight;
+  if (withSound) { setTimeout(playReceive, 80); }
+  // Reações com delay leve
+  setTimeout(() => maybeAddReactions(bub, Date.now()), 600);
 }
 
 function addErrEl(agent, msg) {
   const chatEl = document.getElementById('chat');
   const g = document.createElement('div'); g.className = 'mgroup';
   const row = document.createElement('div'); row.className = 'mrow';
-  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.innerHTML=agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color;
+  av.innerHTML = agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
   const sn = document.createElement('div'); sn.className = 'sname'; sn.style.color=agent.color; sn.textContent=agent.name;
   const err = document.createElement('div'); err.className = 'error-bubble'; err.textContent = msg;
@@ -528,7 +598,8 @@ function addErrEl(agent, msg) {
 function showTyping(agent) {
   const chatEl = document.getElementById('chat');
   const wrap = document.createElement('div'); wrap.className = 'typing-wrap';
-  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.innerHTML=agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color;
+  av.innerHTML = agent.img ? `<img src="${agent.img}" alt="${agent.init}" onerror="this.parentElement.textContent='${agent.init}'">` : agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
   const sn = document.createElement('div'); sn.className = 'typing-name'; sn.style.color=agent.color; sn.textContent=agent.name+' digitando...';
   const tb = document.createElement('div'); tb.className=`typing-bub ${agent.cls}`; tb.innerHTML='<span></span><span></span><span></span>';
@@ -568,7 +639,6 @@ async function send() {
   const conv = getActive();
   const chatEl = document.getElementById('chat');
 
-  // Remove tela de boas-vindas
   const welcome = chatEl.querySelector('.welcome');
   if (welcome) {
     chatEl.innerHTML = '';
@@ -580,15 +650,17 @@ async function send() {
   conv.messages.push({ role:'user', text, time:t0 });
   updateMeta(conv.id, text);
   addUserEl(text, t0);
+  playSend();
 
   ibox.value = ''; ibox.style.height='auto'; sbtn.disabled=true;
 
-  // Histórico para contexto (últimas 8 trocas)
-  const hist = conv.messages.slice(-16).map(m =>
-    m.role==='user' ? `Rone: ${m.text}` : `${m.agent==='tony'?'Tony':m.agent==='arle'?'Arlequina':'Bruce'}: ${m.text}`
-  ).join('\n');
+  // Histórico com limite de chars
+  const hist = buildHistory(conv.messages.slice(0, -1)); // exclui a msg que acabou de mandar
 
-  // Detecta quais agentes foram mencionados
+  // Contexto emocional
+  const emoCtx = buildEmotionalContext(conv.messages.slice(0, -1), text);
+
+  // Detecta menções
   const textLower = text.toLowerCase();
   const mentions = {
     tony:  /\btony\b/.test(textLower),
@@ -596,7 +668,6 @@ async function send() {
     bruce: /\bbruce\b/.test(textLower)
   };
   const anyMention = mentions.tony || mentions.arle || mentions.bruce;
-  // Se ninguém foi mencionado, todos respondem; senão só os mencionados
   const willRespond = {
     tony:  !anyMention || mentions.tony,
     arle:  !anyMention || mentions.arle,
@@ -615,11 +686,11 @@ async function send() {
       const t = now();
       tonyR = await callEdge(AGENTS[0].fn, {
         system: AGENTS[0].system,
-        userMsg: `Histórico da conversa:\n${hist}\n\nRone acabou de dizer: "${text}"\n\nResponda como Tony:`
+        userMsg: `Histórico da conversa:\n${hist}${emoCtx}\n\nRone acabou de dizer: "${text}"\n\nResponda como Tony:`
       });
       conv.messages.push({ role:'agent', agent:'tony', text:tonyR, time:t });
       saveConvs(convs);
-      addAgentEl(AGENTS[0], tonyR, t);
+      addAgentEl(AGENTS[0], tonyR, t, true, true);
     } catch(e) { addErrEl(AGENTS[0], 'Erro: '+e.message); }
   }
 
@@ -633,11 +704,11 @@ async function send() {
       const t = now();
       arleR = await callEdge(AGENTS[1].fn, {
         system: AGENTS[1].system,
-        userMsg: `Histórico da conversa:\n${hist}\n\nRone disse: "${text}"\n${tonyR?`Tony respondeu: "${tonyR}"\n`:''}Responda como Arlequina (lembre: chame Rone de pudinzinho):`
+        userMsg: `Histórico da conversa:\n${hist}${emoCtx}\n\nRone disse: "${text}"\n${tonyR?`Tony respondeu: "${tonyR}"\n`:''}Responda como Arlequina (chame Rone de pudinzinho). Se Tony já resolveu tudo, pode só reagir com uma linha:`
       });
       conv.messages.push({ role:'agent', agent:'arle', text:arleR, time:t });
       saveConvs(convs);
-      addAgentEl(AGENTS[1], arleR, t);
+      addAgentEl(AGENTS[1], arleR, t, true, true);
     } catch(e) { addErrEl(AGENTS[1], 'Erro: '+e.message); }
   }
 
@@ -651,11 +722,11 @@ async function send() {
       const t = now();
       const bruceR = await callEdge(AGENTS[2].fn, {
         system: AGENTS[2].system,
-        userMsg: `Histórico da conversa:\n${hist}\n\nRone disse: "${text}"\n${tonyR?`Tony disse: "${tonyR}"\n`:''}${arleR?`Arlequina disse: "${arleR}"\n`:''}Responda como Bruce, encontrando o insight ou síntese que faltou:`
+        userMsg: `Histórico da conversa:\n${hist}${emoCtx}\n\nRone disse: "${text}"\n${tonyR?`Tony disse: "${tonyR}"\n`:''}${arleR?`Arlequina disse: "${arleR}"\n`:''}Responda como Bruce, encontrando o insight ou síntese que faltou. Se os outros já cobriram tudo, pode ser breve:`
       });
       conv.messages.push({ role:'agent', agent:'bruce', text:bruceR, time:t });
       saveConvs(convs);
-      addAgentEl(AGENTS[2], bruceR, t);
+      addAgentEl(AGENTS[2], bruceR, t, true, true);
     } catch(e) { addErrEl(AGENTS[2], 'Erro: '+e.message); }
   }
 
