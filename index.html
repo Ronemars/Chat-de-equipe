@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#111318">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Equipe Rone">
+<link rel="manifest" id="pwa-manifest">
 <title>Equipe Rone Mars</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -131,6 +136,21 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
 .attach-btn { width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); border: 1px solid var(--border2); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; color: var(--text3); }
 .attach-btn:hover { background: var(--surface3); color: var(--text2); }
 .attach-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+.mic-btn { width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); border: 1px solid var(--border2); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; color: var(--text3); }
+.mic-btn:hover { background: var(--surface3); color: var(--text2); }
+.mic-btn.listening { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #f87171; animation: micPulse 1s infinite; }
+.mic-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+@keyframes micPulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.3)} 50%{box-shadow:0 0 0 6px rgba(239,68,68,0)} }
+.action-card { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-radius: 12px; background: var(--surface2); border: 1px solid var(--border2); margin-top: 6px; cursor: pointer; transition: background 0.15s; user-select: none; }
+.action-card:hover { background: var(--surface3); }
+.action-card-icon { font-size: 18px; flex-shrink: 0; }
+.action-card-label { font-size: 13px; color: var(--text2); flex: 1; }
+.action-card-btn { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; border: none; cursor: pointer; background: var(--you-bg); color: var(--you); border: 1px solid var(--you-border); }
+.notif-bar { display: none; align-items: center; gap: 10px; padding: 8px 14px; background: rgba(167,139,250,0.08); border-bottom: 1px solid rgba(167,139,250,0.18); font-size: 12px; color: var(--text2); cursor: pointer; }
+.notif-bar.show { display: flex; }
+.notif-bar-icon { font-size: 16px; }
+.pref-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; background: var(--surface3); border: 1px solid var(--border2); color: var(--text2); margin: 2px; }
+.prefs-row { padding: 6px 14px 2px; display: flex; flex-wrap: wrap; gap: 2px; min-height: 0; }
 .sbtn { width: 46px; height: 46px; border-radius: 14px; background: var(--you); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s; box-shadow: 0 2px 8px rgba(167,139,250,0.35); }
 .sbtn:hover { opacity: 0.88; box-shadow: 0 4px 14px rgba(167,139,250,0.45); }
 .sbtn:active { transform: scale(0.93); }
@@ -195,6 +215,12 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
       <div class="online-badge">Online</div>
     </div>
 
+    <div class="notif-bar" id="notifBar" onclick="requestNotifPermission()">
+      <span class="notif-bar-icon">🔔</span>
+      <span>Ativar notificações para lembretes da equipe</span>
+      <span style="margin-left:auto;font-weight:700;color:var(--you)">Ativar →</span>
+    </div>
+    <div class="prefs-row" id="prefsRow"></div>
     <div class="chat" id="chat"></div>
 
     <div class="input-area">
@@ -207,13 +233,16 @@ html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var
         <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Anexar arquivo">
           <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         </button>
+        <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="Falar">
+          <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 10a7 7 0 0 1-14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+        </button>
         <input type="file" id="fileInput" style="display:none" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.gif,.webp" onchange="handleFileSelect(event)">
         <textarea class="ibox" id="ibox" placeholder="Manda uma mensagem para a equipe..." rows="1"></textarea>
         <button class="sbtn" id="sbtn" onclick="send()">
           <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
         </button>
       </div>
-      <div class="input-hint">Enter para enviar · Shift+Enter para nova linha · 📎 para anexar arquivo</div>
+      <div class="input-hint">Enter para enviar · Shift+Enter para nova linha · 🎤 para falar</div>
     </div>
   </div>
 </div>
@@ -222,6 +251,194 @@ const SUPABASE_URL = 'https://ugcexyckvpkuhwaggloj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnY2V4eWNrdnBrdWh3YWdnbG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MDI4NzIsImV4cCI6MjA5MTE3ODg3Mn0.WkDy8u1RK2Rhps-iv-bcsv3ZrVaUgPx1h1dnJXJ5gRI';
 const MAX_CONVS = 5;
 const MAX_HIST_CHARS = 6000;
+
+// ── PWA MANIFEST DINÂMICO ──
+(function(){
+  const manifest = {
+    name: 'Equipe Rone Mars', short_name: 'Equipe Rone',
+    description: 'Seu grupo privado com Tony, Arlequina e Bruce',
+    start_url: './', display: 'standalone', background_color: '#111318',
+    theme_color: '#111318', orientation: 'portrait',
+    icons: [
+      { src: 'https://emojicdn.elk.sh/🦸?style=twitter&size=192', sizes: '192x192', type: 'image/png' },
+      { src: 'https://emojicdn.elk.sh/🦸?style=twitter&size=512', sizes: '512x512', type: 'image/png' }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
+})();
+
+// ── MEMÓRIA DE PREFERÊNCIAS ──
+function loadPrefs(convId) {
+  try { return JSON.parse(localStorage.getItem('rone_prefs_'+convId)||'[]'); } catch { return []; }
+}
+function savePrefs(convId, prefs) {
+  localStorage.setItem('rone_prefs_'+convId, JSON.stringify(prefs.slice(-12)));
+}
+function extractPrefs(text, existingPrefs) {
+  const newPrefs = [...existingPrefs];
+  const tl = text.toLowerCase();
+  const patterns = [
+    { re: /\b(prefiro|gosto de|quero|pode ser|me manda|me chama|odeio|não gosto)\s+(.{4,40}?)[\.,!?]/gi, label: m => m[2].trim() },
+    { re: /\b(sou|trabalho com|meu projeto|minha empresa|minha stack|uso)\s+(.{4,40}?)[\.,!?\n]/gi, label: m => m[1]+' '+m[2].trim() },
+    { re: /\b(me lembra?|lembre(-me)?|não esqueça)\b/i, label: () => 'lembrete solicitado' },
+    { re: /\b(curto|odeio)\s+respostas?\s+(curtas?|longas?|detalhadas?)/i, label: m => m[0].trim() },
+  ];
+  patterns.forEach(p => {
+    if (typeof p.label === 'function' && p.re.global) {
+      let m; p.re.lastIndex=0;
+      while((m=p.re.exec(text))!==null) {
+        const label = p.label(m).slice(0,50);
+        if (label.length>3 && !newPrefs.includes(label)) newPrefs.push(label);
+      }
+    } else if (p.re.test && p.re.test(tl)) {
+      const label = typeof p.label==='function' ? p.label([tl.match(p.re)]) : p.label;
+      if (label && !newPrefs.includes(label)) newPrefs.push(label);
+    }
+  });
+  return newPrefs;
+}
+function buildPrefsCtx(prefs) {
+  if (!prefs.length) return '';
+  return `\n\n[Preferências e contexto que Rone já mencionou nesta conversa: ${prefs.join('; ')}. Use isso naturalmente quando relevante — não cite a lista, apenas aplique.]`;
+}
+function renderPrefsRow(prefs) {
+  const row = document.getElementById('prefsRow');
+  if (!prefs.length) { row.innerHTML=''; return; }
+  row.innerHTML = prefs.slice(-5).map(p=>`<span class="pref-tag">💡 ${esc(p)}</span>`).join('');
+}
+
+// ── NOTIFICAÇÕES ──
+function checkNotifBar() {
+  const bar = document.getElementById('notifBar');
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') bar.classList.add('show');
+}
+async function requestNotifPermission() {
+  const perm = await Notification.requestPermission();
+  document.getElementById('notifBar').classList.remove('show');
+  if (perm === 'granted') showSystemNotif('Equipe Rone Mars', 'Notificações ativadas! A equipe vai te avisar. 🦸');
+}
+function showSystemNotif(title, body, icon='🦸') {
+  if (Notification.permission !== 'granted') return;
+  try { new Notification(title, { body, icon: 'https://emojicdn.elk.sh/🦸?style=twitter&size=192', badge: 'https://emojicdn.elk.sh/🦸?style=twitter&size=96' }); } catch(e) {}
+}
+function scheduleReminder(minutes, msg, agentName) {
+  if (Notification.permission !== 'granted') {
+    alert(`Ative as notificações para receber lembretes! (botão no topo)`);
+    return false;
+  }
+  setTimeout(() => {
+    showSystemNotif(`${agentName} — Equipe Rone`, msg);
+    playReceive();
+  }, minutes * 60 * 1000);
+  return true;
+}
+
+// ── AÇÕES REAIS (share, clipboard, deeplinks, lembretes) ──
+function detectActions(agentText, userText) {
+  const actions = [];
+  const tl = agentText.toLowerCase();
+  const ul = userText.toLowerCase();
+
+  // Copiar conteúdo que o agente gerou
+  if (agentText.length > 60 && /\b(aqui|pronto|segue|gerou|criei|escrevi|redigi|texto|mensagem|email|post)\b/.test(tl)) {
+    actions.push({ icon:'📋', label:'Copiar resposta', fn: () => copyText(agentText) });
+  }
+
+  // Compartilhar
+  if (/\b(compartilha|manda|envia|posta|share)\b/.test(ul) || /\b(compartilha|manda|envia)\b/.test(tl)) {
+    actions.push({ icon:'📤', label:'Compartilhar', fn: () => shareText(agentText) });
+  }
+
+  // WhatsApp
+  if (/whatsapp|zap|wpp/.test(ul) || /whatsapp|zap/.test(tl)) {
+    const msg = encodeURIComponent(agentText.replace(/^[A-Za-zÀ-ú]+:\s/,'').trim());
+    actions.push({ icon:'💬', label:'Abrir WhatsApp', fn: () => window.open(`https://wa.me/?text=${msg}`) });
+  }
+
+  // Maps / Localização
+  if (/\b(maps|mapa|rota|direção|como chego|endereço|onde fica)\b/.test(ul)) {
+    const query = encodeURIComponent(userText.replace(/maps|mapa|rota|como chego|me leva/gi,'').trim());
+    actions.push({ icon:'🗺️', label:'Abrir no Maps', fn: () => window.open(`https://maps.google.com/?q=${query}`) });
+  }
+
+  // Spotify
+  if (/spotify|música|playlist|ouvir/.test(ul)) {
+    const query = encodeURIComponent(userText.replace(/spotify|playlist|músic[ao]|ouvir/gi,'').trim());
+    actions.push({ icon:'🎵', label:'Buscar no Spotify', fn: () => window.open(`https://open.spotify.com/search/${query}`) });
+  }
+
+  // YouTube
+  if (/youtube|yt|vídeo|video|assistir/.test(ul)) {
+    const query = encodeURIComponent(userText.replace(/youtube|yt|vídeo|video|assistir/gi,'').trim());
+    actions.push({ icon:'▶️', label:'Buscar no YouTube', fn: () => window.open(`https://youtube.com/results?search_query=${query}`) });
+  }
+
+  // Lembrete
+  const reminderMatch = userText.match(/\b(?:me lembra?|lembre(?:-me)?|avisa?(?:-me)?)\s+(?:daqui\s+)?(?:em\s+)?(\d+)\s*(minuto|hora|min|hr)/i);
+  if (reminderMatch) {
+    const val = parseInt(reminderMatch[1]);
+    const unit = reminderMatch[2].toLowerCase();
+    const minutes = unit.startsWith('h') ? val*60 : val;
+    const agentName = 'Equipe Rone';
+    actions.push({ icon:'⏰', label:`Lembrete em ${val} ${unit}(s)`, fn: () => {
+      if (scheduleReminder(minutes, `Lembrete: ${userText.replace(/me lembra?.*$/i,'').trim() || 'você pediu um lembrete!'}`, agentName))
+        alert(`✅ Lembrete configurado para ${val} ${unit}(s)!`);
+    }});
+  }
+
+  // Instagram
+  if (/instagram|insta/.test(ul)) {
+    actions.push({ icon:'📸', label:'Abrir Instagram', fn: () => window.open('https://instagram.com') });
+  }
+
+  return actions;
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text.replace(/\s*\d{2}:\d{2}$/,'').trim());
+    showToast('📋 Copiado!');
+  } catch { showToast('Erro ao copiar'); }
+}
+
+async function shareText(text) {
+  const clean = text.replace(/\s*\d{2}:\d{2}$/,'').trim();
+  if (navigator.share) {
+    try { await navigator.share({ text: clean }); } catch(e) { copyText(clean); }
+  } else { copyText(clean); }
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t=document.createElement('div'); t.id='toast'; t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#22262f;border:1px solid rgba(255,255,255,0.12);color:#f0f2f7;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity 0.2s;pointer-events:none;'; document.body.appendChild(t); }
+  t.textContent=msg; t.style.opacity='1';
+  clearTimeout(t._to); t._to=setTimeout(()=>t.style.opacity='0',2000);
+}
+
+// ── VOZ (Speech Recognition) ──
+let recognition=null, isListening=false;
+function toggleVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Seu navegador não suporta reconhecimento de voz. Use o Chrome.'); return;
+  }
+  if (isListening) { recognition && recognition.stop(); return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang='pt-BR'; recognition.continuous=false; recognition.interimResults=true;
+  const micBtn=document.getElementById('micBtn');
+  recognition.onstart=()=>{ isListening=true; micBtn.classList.add('listening'); };
+  recognition.onresult=e=>{
+    const transcript=[...e.results].map(r=>r[0].transcript).join('');
+    document.getElementById('ibox').value=transcript;
+    document.getElementById('ibox').style.height='auto';
+    document.getElementById('ibox').style.height=Math.min(document.getElementById('ibox').scrollHeight,130)+'px';
+  };
+  recognition.onend=()=>{ isListening=false; micBtn.classList.remove('listening'); };
+  recognition.onerror=()=>{ isListening=false; micBtn.classList.remove('listening'); };
+  recognition.start();
+}
 
 // ── SONS ──
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -449,7 +666,7 @@ function newChat() {
   convs.push({id, name:'Nova conversa', emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)], preview:'', messages:[]});
   saveConvs(convs); switchConv(id); closeSidebar();
 }
-function switchConv(id) { activeId=id; saveActive(id); renderConvList(); renderChat(); updateFocusUI(['tony','arle','bruce']); }
+function switchConv(id) { activeId=id; saveActive(id); renderConvList(); renderChat(); updateFocusUI(['tony','arle','bruce']); renderPrefsRow(loadPrefs(id)); }
 function deleteConv(id, e) {
   e.stopPropagation();
   if (!confirm('Excluir esta conversa?')) return;
@@ -570,7 +787,7 @@ function addUserEl(text, time, anim=true, fileName=null, fIcon=null) {
   chatEl.appendChild(g); chatEl.scrollTop=chatEl.scrollHeight;
 }
 
-function addAgentEl(agent, text, time, anim=true, withSound=true) {
+function addAgentEl(agent, text, time, anim=true, withSound=true, userText='') {
   const chatEl=document.getElementById('chat');
   const g=document.createElement('div'); g.className='mgroup'; if(!anim) g.style.animation='none';
   const row=document.createElement('div'); row.className='mrow';
@@ -580,7 +797,20 @@ function addAgentEl(agent, text, time, anim=true, withSound=true) {
   const sn=document.createElement('div'); sn.className='sname'; sn.style.color=agent.color; sn.textContent=agent.name;
   const bub=document.createElement('div'); bub.className=`bubble ${agent.cls}`; bub.textContent=text;
   const t=document.createElement('span'); t.className='btime'; t.textContent=time;
-  bub.appendChild(t); bw.appendChild(sn); bw.appendChild(bub); row.appendChild(av); row.appendChild(bw); g.appendChild(row);
+  bub.appendChild(t); bw.appendChild(sn); bw.appendChild(bub);
+
+  // Action cards
+  if (userText && withSound) {
+    const acts = detectActions(text, userText);
+    acts.forEach(act => {
+      const card = document.createElement('div'); card.className='action-card';
+      card.innerHTML=`<span class="action-card-icon">${act.icon}</span><span class="action-card-label">${act.label}</span><button class="action-card-btn">Executar</button>`;
+      card.querySelector('button').addEventListener('click', e => { e.stopPropagation(); act.fn(); });
+      bw.appendChild(card);
+    });
+  }
+
+  row.appendChild(av); row.appendChild(bw); g.appendChild(row);
   chatEl.appendChild(g); chatEl.scrollTop=chatEl.scrollHeight;
   if(withSound) setTimeout(playReceive,80);
   setTimeout(()=>maybeAddReactions(bub),600);
@@ -665,6 +895,12 @@ async function send() {
   const hist = buildHistory(conv.messages.slice(0,-1));
   const emoCtx = buildEmoCtx(conv.messages.slice(0,-1), displayText);
 
+  // Preferências
+  const prefs = extractPrefs(displayText, loadPrefs(conv.id));
+  savePrefs(conv.id, prefs);
+  renderPrefsRow(prefs);
+  const prefsCtx = buildPrefsCtx(prefs);
+
   // Contexto do arquivo
   let fileCtx='';
   if (curFile) {
@@ -676,7 +912,7 @@ async function send() {
   // Contexto pesquisa web
   const webCtx = needsSearch(text) ? '\n\n[Mensagem requer informação atual da internet. Mencione que fez uma pesquisa.]' : '';
 
-  const baseMsg = `Histórico:\n${hist}${emoCtx}${fileCtx}${webCtx}\n\nRone disse: "${displayText}"`;
+  const baseMsg = `Histórico:\n${hist}${emoCtx}${prefsCtx}${fileCtx}${webCtx}\n\nRone disse: "${displayText}"`;
 
   // Detecta foco
   const focusIds = detectFocus(text, conv.messages.slice(0,-1));
@@ -692,7 +928,7 @@ async function send() {
       const t=now();
       tonyR=await callEdge(AGENTS[0].fn,{system:AGENTS[0].system, userMsg:baseMsg+'\n\nSua vez, Tony. Seja direto e curto:'});
       conv.messages.push({role:'agent',agent:'tony',text:tonyR,time:t});
-      saveConvs(convs); addAgentEl(AGENTS[0],tonyR,t,true,true);
+      saveConvs(convs); addAgentEl(AGENTS[0],tonyR,t,true,true,displayText);
     } catch(e) { addErrEl(AGENTS[0],'Erro: '+e.message); }
   }
 
@@ -707,7 +943,7 @@ async function send() {
         userMsg:baseMsg+tonyBlock+'\n\nSua vez, Arlequina. Reaja ao que Tony disse se fizer sentido, mas foque no Rone. Curto e na veia:'
       });
       conv.messages.push({role:'agent',agent:'arle',text:arleR,time:t});
-      saveConvs(convs); addAgentEl(AGENTS[1],arleR,t,true,true);
+      saveConvs(convs); addAgentEl(AGENTS[1],arleR,t,true,true,displayText);
     } catch(e) { addErrEl(AGENTS[1],'Erro: '+e.message); }
   }
 
@@ -722,7 +958,7 @@ async function send() {
         userMsg:baseMsg+(othersBlock?'\n\nO que os outros falaram:\n'+othersBlock:'')+'\n\nSua vez, Bruce. Se já cobriram tudo, uma linha resolve. Não repita nada do que foi dito:'
       });
       conv.messages.push({role:'agent',agent:'bruce',text:bruceR,time:t});
-      saveConvs(convs); addAgentEl(AGENTS[2],bruceR,t,true,true);
+      saveConvs(convs); addAgentEl(AGENTS[2],bruceR,t,true,true,displayText);
     } catch(e) { addErrEl(AGENTS[2],'Erro: '+e.message); }
   }
 
@@ -763,8 +999,11 @@ async function send() {
 
 // ── INIT ──
 if (!activeId||!convs.find(c=>c.id===activeId)) { activeId=null; saveActive(null); }
+checkNotifBar();
 renderConvList();
 renderChat();
+// Renderiza prefs da conversa ativa se existir
+if (activeId) renderPrefsRow(loadPrefs(activeId));
 </script>
 </body>
 </html>
