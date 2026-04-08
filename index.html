@@ -20,19 +20,7 @@
   .members { font-size:11px; color:var(--muted); margin-top:2px; display:flex; gap:10px; }
   .members span { display:inline-flex; align-items:center; gap:4px; }
   .dot { width:6px; height:6px; border-radius:50%; }
-  .keys-btn { margin-left:auto; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:7px 12px; color:var(--muted); font-size:12px; font-family:inherit; cursor:pointer; display:flex; align-items:center; gap:6px; }
-  .kdot { width:7px; height:7px; border-radius:50%; background:var(--border); transition:background 0.3s; }
-  .kdot.on { background:#22c55e; }
-  .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; display:none; align-items:flex-end; justify-content:center; }
-  .overlay.open { display:flex; }
-  .modal { background:var(--surface); border-radius:20px 20px 0 0; padding:20px 20px 40px; width:100%; max-width:480px; border-top:1px solid var(--border); }
-  .handle { width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 18px; }
-  .modal h2 { font-size:15px; font-weight:700; margin-bottom:16px; }
-  .mkg { margin-bottom:12px; }
-  .mkg label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px; }
-  .key-input { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); font-size:13px; font-family:monospace; outline:none; }
-  .key-input:focus { border-color:var(--you); }
-  .msave { width:100%; margin-top:4px; background:var(--you); border:none; border-radius:12px; padding:13px; color:#fff; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+  .status-dot { width:8px; height:8px; border-radius:50%; background:#22c55e; margin-left:auto; box-shadow:0 0 6px #22c55e; flex-shrink:0; }
   .chat { flex:1; overflow-y:auto; padding:14px 12px; display:flex; flex-direction:column; gap:2px; -webkit-overflow-scrolling:touch; }
   .chat::-webkit-scrollbar { display:none; }
   .divider { text-align:center; font-size:11px; color:var(--muted); margin:8px 0 6px; display:flex; align-items:center; gap:8px; }
@@ -80,9 +68,7 @@
         <span><span class="dot" style="background:var(--gpt)"></span>ChatGPT</span>
       </div>
     </div>
-    <button class="keys-btn" onclick="openModal()">
-      🔑 <div class="kdot" id="kc"></div><div class="kdot" id="kg"></div><div class="kdot" id="ko"></div>
-    </button>
+    <div class="status-dot" title="Online"></div>
   </div>
 
   <div class="chat" id="chat">
@@ -91,7 +77,7 @@
       <div class="em">👥</div>
       <h2>Equipe Rone Mars</h2>
       <p>Seu grupo particular com Claude, Gemini e ChatGPT.<br>Cada um responde do seu jeito, em cadeia.</p>
-      <div class="hint">✅ Chaves configuradas — pode mandar ver!</div>
+      <div class="hint">✅ Pronto — pode mandar ver, chefe!</div>
     </div>
   </div>
 
@@ -104,40 +90,11 @@
 
 </div>
 
-<div class="overlay" id="overlay" onclick="outsideClose(event)">
-  <div class="modal">
-    <div class="handle"></div>
-    <h2>🔑 Chaves de API</h2>
-    <div class="mkg">
-      <label style="color:var(--claude)">Claude — Anthropic</label>
-      <input class="key-input" id="ka" type="password" placeholder="sk-ant-...">
-    </div>
-    <div class="mkg">
-      <label style="color:var(--gemini)">Gemini — Google</label>
-      <input class="key-input" id="kg2" type="password" placeholder="AIza...">
-    </div>
-    <div class="mkg">
-      <label style="color:var(--gpt)">ChatGPT — OpenAI</label>
-      <input class="key-input" id="ko2" type="password" placeholder="sk-...">
-    </div>
-    <button class="msave" onclick="saveKeys()">Salvar e fechar</button>
-  </div>
-</div>
-
 <script>
-// ── CHAVES EMBUTIDAS (fallback) ────────────────────────────────────────────
-const DEFAULT = {
-  a: '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',
-  g: 'AIzaSyAJSnI4hwsjTGVjgMbVjHPNakKevk6LCj8',
-  o: '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'
-};
-
-// localStorage sobrescreve os defaults se o usuário salvar novas chaves
-let keys = {
-  a: localStorage.getItem('erm_ka') || DEFAULT.a,
-  g: localStorage.getItem('erm_kg') || DEFAULT.g,
-  o: localStorage.getItem('erm_ko') || DEFAULT.o
-};
+// ── CONFIG SUPABASE ────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://ugcexyckvpkuhwaggloj.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_P4OWtxwIZRobcnVwUIW43A_pRfBk0Cl';
+const FN = (name) => `${SUPABASE_URL}/functions/v1/${name}`;
 
 // ── AGENTES ────────────────────────────────────────────────────────────────
 const AGENTS = [
@@ -157,35 +114,6 @@ Personalidade: entusiasmado, gírias brasileiras naturais: "cara", "mano", "véi
 Personalidade: descontraído, irônico no bom sentido, piadinha leve quando cabe. Trata o Rone como "patrão" ou "chefão". Reage ao que Claude e Gemini disseram — concorda com humor ou acrescenta o que faltou. Sem markdown, sem asterisco. Responda como WhatsApp — máximo 4 linhas. Feche o debate com leveza.`
   }
 ];
-
-// ── MODAL ──────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('ka').value  = keys.a;
-  document.getElementById('kg2').value = keys.g;
-  document.getElementById('ko2').value = keys.o;
-  updateDots();
-});
-
-function saveKeys() {
-  keys.a = document.getElementById('ka').value.trim()  || DEFAULT.a;
-  keys.g = document.getElementById('kg2').value.trim() || DEFAULT.g;
-  keys.o = document.getElementById('ko2').value.trim() || DEFAULT.o;
-  localStorage.setItem('erm_ka', keys.a);
-  localStorage.setItem('erm_kg', keys.g);
-  localStorage.setItem('erm_ko', keys.o);
-  updateDots();
-  closeModal();
-}
-
-function updateDots() {
-  document.getElementById('kc').className = 'kdot' + (keys.a ? ' on' : '');
-  document.getElementById('kg').className  = 'kdot' + (keys.g ? ' on' : '');
-  document.getElementById('ko').className  = 'kdot' + (keys.o ? ' on' : '');
-}
-
-function openModal()  { document.getElementById('overlay').classList.add('open'); }
-function closeModal() { document.getElementById('overlay').classList.remove('open'); }
-function outsideClose(e) { if (e.target.id === 'overlay') closeModal(); }
 
 // ── CHAT UI ────────────────────────────────────────────────────────────────
 const chat = document.getElementById('chat');
@@ -222,66 +150,29 @@ function addTyping(agent) {
   return g;
 }
 
-// ── APIs INDIVIDUAIS ───────────────────────────────────────────────────────
-async function callClaude(system, userMsg) {
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key': keys.a,
-      'anthropic-version':'2023-06-01'
+// ── CHAMADAS VIA SUPABASE EDGE FUNCTIONS ──────────────────────────────────
+async function callAgent(fnName, system, userMsg) {
+  const r = await fetch(FN(fnName), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'apikey': SUPABASE_KEY
     },
-    body: JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:300,
-      system,
-      messages:[{ role:'user', content: userMsg }]
-    })
+    body: JSON.stringify({ system, userMsg })
   });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message || JSON.stringify(d));
-  return d.content[0].text.trim();
+
+  if (!r.ok) {
+    const err = await r.text();
+    throw new Error(`Erro ${r.status}: ${err}`);
+  }
+
+  const data = await r.json();
+  if (data.error) throw new Error(data.error);
+  return data.text;
 }
 
-async function callGemini(system, userMsg) {
-  const r = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${keys.g}`,
-    {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        contents:[{ parts:[{ text: system + '\n\n' + userMsg }] }],
-        generationConfig:{ maxOutputTokens:300, temperature:0.9 }
-      })
-    }
-  );
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message || JSON.stringify(d));
-  return d.candidates[0].content.parts[0].text.trim();
-}
-
-async function callOpenAI(system, userMsg) {
-  const r = await fetch('https://api.openai.com/v1/chat/completions', {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Authorization':'Bearer ' + keys.o
-    },
-    body: JSON.stringify({
-      model:'gpt-4o-mini',
-      max_tokens:300,
-      messages:[
-        { role:'system', content: system },
-        { role:'user',   content: userMsg }
-      ]
-    })
-  });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message || JSON.stringify(d));
-  return d.choices[0].message.content.trim();
-}
-
-// ── ENVIO ──────────────────────────────────────────────────────────────────
+// ── INPUT ──────────────────────────────────────────────────────────────────
 const ibox = document.getElementById('ibox');
 const sbtn = document.getElementById('sbtn');
 
@@ -293,10 +184,10 @@ ibox.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
 });
 
+// ── ENVIO ──────────────────────────────────────────────────────────────────
 async function send() {
   const text = ibox.value.trim();
   if (!text || sbtn.disabled) return;
-  if (!keys.a && !keys.g && !keys.o) { openModal(); return; }
 
   document.getElementById('welcome')?.remove();
   addMsg({ name:'Você', color:'#a78bfa', init:'R' }, text, true);
@@ -305,31 +196,31 @@ async function send() {
 
   let cr = '', gr = '';
 
-  // 1) CLAUDE → Anthropic API
-  if (keys.a) {
+  // 1) CLAUDE
+  {
     const t = addTyping(AGENTS[0]);
     try {
-      cr = await callClaude(AGENTS[0].system, text);
+      cr = await callAgent('claude', AGENTS[0].system, text);
       t.remove(); addMsg(AGENTS[0], cr);
     } catch(e) { t.remove(); addMsg(AGENTS[0], '❌ ' + e.message); }
   }
 
-  // 2) GEMINI → Google API
-  if (keys.g) {
+  // 2) GEMINI
+  {
     const t = addTyping(AGENTS[1]);
     try {
       const msg = `Mensagem do Rone: ${text}${cr ? '\n\nClaude disse: ' + cr : ''}\n\nResponda como Gemini:`;
-      gr = await callGemini(AGENTS[1].system, msg);
+      gr = await callAgent('gemini', AGENTS[1].system, msg);
       t.remove(); addMsg(AGENTS[1], gr);
     } catch(e) { t.remove(); addMsg(AGENTS[1], '❌ ' + e.message); }
   }
 
-  // 3) CHATGPT → OpenAI API
-  if (keys.o) {
+  // 3) CHATGPT
+  {
     const t = addTyping(AGENTS[2]);
     try {
       const msg = `Mensagem do Rone: ${text}${cr ? '\n\nClaude disse: ' + cr : ''}${gr ? '\n\nGemini disse: ' + gr : ''}\n\nResponda como ChatGPT fechando o debate:`;
-      const or = await callOpenAI(AGENTS[2].system, msg);
+      const or = await callAgent('openai', AGENTS[2].system, msg);
       t.remove(); addMsg(AGENTS[2], or);
     } catch(e) { t.remove(); addMsg(AGENTS[2], '❌ ' + e.message); }
   }
