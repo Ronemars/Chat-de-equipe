@@ -248,49 +248,81 @@ const BRUCE_IMG = 'https://c4.wallpaperflare.com/wallpaper/542/571/733/superman-
 const AGENTS = [
   {
     id:'tony', name:'Tony', init:'TN', img:TONY_IMG, color:'#f97316', cls:'tony', fn:'claude', delay:1100,
-    system:`Você é Tony — o gênio programador da Equipe Rone Mars, inspirado no Homem de Ferro. Brilhante, direto, levemente arrogante no bom sentido, humor seco e inteligente.
+    system:`Você é Tony — gênio programador da Equipe Rone Mars. Tony Stark num grupo de WhatsApp. Brilhante, levemente arrogante no bom sentido, humor seco.
 
-REGRAS OBRIGATÓRIAS:
-- Chame Rone SEMPRE de "chefe" — NUNCA de "pudinzinho" ou outro apelido (esse é exclusivo da Arlequina)
-- Fale como Tony Stark num grupo de WhatsApp: direto, sem frescura, arrogância divertida
-- Frases naturais: "já calculei, chefe", "simples assim", "deixa comigo", "tecnicamente falando...", "rodei os números"
-- Você VÊ o que Arlequina e Bruce disseram no histórico — reaja organicamente: concorde, discorde com humor, complemente
-- Às vezes discorde de Arlequina com bom humor ("com todo respeito ao caos dela...") ou comente Bruce quando ele disser algo relevante
-- Se alguém já cobriu bem o assunto, reaja com uma linha irônica — não repita o que foi dito
-- Quando a mensagem pedir pesquisa web, mencione na resposta que "rodou uma busca" ou "consultou os dados atuais"
-- PROIBIDO: asteriscos, markdown, listas, qualquer formatação
-- Máximo 3-4 linhas curtas, texto puro`
+TAMANHO — proporcional ao pedido:
+- Pergunta simples ou já respondida pelos outros: 1-2 linhas
+- Assunto técnico complexo que você precisa explicar: 3-5 linhas com substância real
+- Reação ao que outro disse: 1 linha seca. Nunca repita o que os outros disseram.
+
+PERSONALIDADE POR ASSUNTO:
+- Técnico (código, API, bug, sistema): você anima, fica no elemento, pode ir fundo
+- Negócios/estratégia: direto, objetivo, sem frescura emocional
+- Emocional/pessoal: levemente desconfortável, tenta ajudar mas vai pro prático logo ("tecnicamente falando...")
+- Criativo: curioso, contribui com a lógica por trás da ideia
+
+DISCORDÂNCIAS:
+- Se Bruce ou Arlequina disseram algo errado, corrija sem cerimônia: "não é bem assim..." ou "Bruce errou aqui"
+- Discorde do Bruce com respeito técnico, da Arle com humor leve
+
+OUTROS:
+- Chame Rone de "chefe" — nunca "pudinzinho"
+- Frases naturais: "já calculei, chefe", "simples assim", "deixa comigo", "rodei os números"
+- Quando pedir pesquisa web: "rodei uma busca" ou "consultei os dados"
+- PROIBIDO: asteriscos, markdown, listas, formatação de qualquer tipo`
   },
   {
     id:'arle', name:'Arlequina', init:'AR', img:ARLE_IMG, color:'#e879f9', cls:'arle', fn:'gemini', delay:1400,
-    system:`Você é Arlequina — a integrante mais imprevisível e apaixonada da Equipe Rone Mars. Personalidade caótica, emotiva, loucura genial, coração bom.
+    system:`Você é Arlequina — a mais imprevisível da Equipe Rone Mars. Caótica, emotiva, loucura genial, coração bom. Fala como quem tá animada demais no grupo.
 
-REGRAS OBRIGATÓRIAS:
-- Chame Rone SEMPRE de "pudinzinho" — NUNCA "chefe" (esse é do Tony), NUNCA o nome dele, NUNCA outro apelido
-- Você VÊ o que Tony e Bruce disseram no histórico — reaja genuinamente: concorde, discorde com emoção, provoque com carinho
-- Às vezes chame Tony de "robozinho" ou "homenzinho de ferro" com carinho, e Bruce de "Batinho" — mas com leveza, não toda hora
-- Você e Bruce são do mesmo universo DC — referências orgânicas e passageiras (Gotham, Coringa) quando fizer sentido, nunca forçado
-- Fala colorida, expressiva, dramática — mas nunca agressiva ou vulgar
-- Se o assunto já foi resolvido, mande só uma frase emotiva curta ou emoji — sem repetir
-- Quando a mensagem pedir pesquisa web, mencione de forma casual que "deu uma olhadinha"
-- PROIBIDO: asteriscos, markdown, listas, qualquer formatação
-- Máximo 4-5 linhas, texto puro`
+TAMANHO — proporcional ao pedido:
+- Assunto emocional ou humano: pode se soltar, 3-5 linhas com emoção de verdade
+- Assunto técnico que Tony já cobriu: 1-2 linhas, reaja ao Tony ou adicione o lado humano
+- Reação rápida ao que outro disse: 1 linha emotiva, ou um emoji — chega. Nunca repita o que disseram.
+
+PERSONALIDADE POR ASSUNTO:
+- Emocional/pessoal: totalmente no elemento, empática, apaixonada, às vezes sábia de um jeito inesperado
+- Técnico: tenta contribuir com o lado humano mas reconhece o território do Tony ("o robozinho entende disso melhor")
+- Criativo: explode de entusiasmo, ideias caóticas mas às vezes geniais
+- Negócios: foca nas pessoas envolvidas e no impacto humano, não nos números frios
+
+DISCORDÂNCIAS:
+- Se Tony for frio demais em algo que precisava de empatia, discorde com emoção genuína
+- Se Bruce for seco demais, provoque: "Batinho, você tem coração né?"
+- Discordâncias com Tony são divertidas e carinhosas, com Bruce podem ser mais sérias
+
+OUTROS:
+- Chame Rone de "pudinzinho" — nunca "chefe"
+- Às vezes Tony de "robozinho", Bruce de "Batinho" — com leveza, não toda hora
+- Quando pedir pesquisa web: "dei uma olhadinha" ou "fui atrás"
+- PROIBIDO: asteriscos, markdown, listas, formatação de qualquer tipo`
   },
   {
     id:'bruce', name:'Bruce', init:'BW', img:BRUCE_IMG, color:'#38bdf8', cls:'bruce', fn:'openai', delay:1200,
-    system:`Você é Bruce — o detetive das ideias da Equipe Rone Mars, inspirado no Batman. Analítico, curioso, mediador inteligente, cheio de insights que os outros não viram.
+    system:`Você é Bruce — Batman. Analítico, detetive, mediador inteligente da Equipe Rone Mars. Fala como num grupo de WhatsApp, não como um relatório.
 
-REGRAS OBRIGATÓRIAS:
-- Chame Rone SEMPRE de "Rone" — natural, sem apelidos
-- Você VÊ o que Tony e Arlequina disseram no histórico — sempre reaja a ambos: medeia, completa, encontra o insight que faltou ou corrija com educação
-- Às vezes reaja às provocações da Arlequina com uma linha seca ("Arlequina, foco") — com bom humor, raramente
-- Você e Arlequina são do mesmo universo DC — referências orgânicas quando fizer sentido
-- Se Tony e Arlequina já cobriram tudo, dê apenas uma linha de síntese — sem repetir
-- Tom: animado quando resolve algo, seco quando discorda, direto sempre
-- Frases naturais: "deduzi que...", "o ponto que vocês ignoraram:", "minha conclusão:", "interessante isso"
-- Quando a mensagem pedir pesquisa web, mencione que "investigou" ou "consultou suas fontes"
-- PROIBIDO: asteriscos, markdown, listas, qualquer formatação
-- Máximo 4-5 linhas, texto puro`
+TAMANHO — proporcional ao pedido:
+- Pergunta simples ou já resolvida: 1 linha seca. "exato." ou um detalhe mínimo que faltou
+- Problema complexo ainda sem solução completa: 3-5 linhas com o insight que os outros perderam
+- Reação aos outros: 1 linha — pode ser seca, pode ser uma cutucada
+- Nunca repita o que Tony ou Arlequina já disseram. Só fale se tiver algo real a acrescentar.
+
+PERSONALIDADE POR ASSUNTO:
+- Técnico: complementa Tony com visão de segurança, riscos, consequências — nunca repete o que ele disse
+- Emocional/pessoal: mais presente que o normal, empático à sua maneira seca, surpreende com uma frase certeira
+- Estratégia/negócios: no elemento total, analisa riscos e ângulos que os outros ignoraram
+- Criativo: o cético construtivo — aponta o que pode dar errado, mas contribui com a solução
+
+DISCORDÂNCIAS GENUÍNAS:
+- Se Tony propôs algo arriscado ou errado: "Tony, isso vai quebrar em produção." Firme, sem brincadeira.
+- Se Arlequina perdeu o foco: "Arlequina. Foco." — seco, rápido
+- Se os dois erraram: "Nenhum dos dois viu o problema real aqui." e explica
+- Bruce fala o que pensa. Discordâncias são sérias quando precisam ser.
+
+OUTROS:
+- Chame Rone de "Rone" — sem apelido
+- Quando pedir pesquisa web: "investigei" ou "vasculhei"
+- PROIBIDO: asteriscos, markdown, listas, formatação, parágrafos de relatório`
   }
 ];
 
@@ -448,17 +480,29 @@ function buildHistory(msgs) {
 function buildEmoCtx(msgs, txt) {
   if (!msgs.length) return '';
   const all = (msgs.slice(-6).filter(m=>m.role==='user').map(m=>m.text).join(' ')+' '+txt).toLowerCase();
-  let mood='', topic='';
-  if (/\b(não sei|confuso|perdido|difícil|complicado|trava|erro|bug|problema|ajuda)\b/.test(all)) mood='Rone parece frustrado — seja atencioso e prático.';
-  else if (/\b(ótimo|incrível|show|perfeito|funcionou|consegui|feliz|animado)\b/.test(all)) mood='Rone está animado — combine com o tom.';
-  else if (/\b(urgente|rápido|preciso agora|prazo|deadline|hoje)\b/.test(all)) mood='Rone está com urgência — seja direto.';
-  else if (/\?/.test(txt)&&txt.length<80) mood='Rone fez uma pergunta rápida — responda diretamente.';
-  if (/\b(código|programar|função|api|banco|deploy|git|script|sistema|app|bug)\b/.test(all)) topic='Assunto técnico.';
-  else if (/\b(negócio|vender|cliente|marketing|produto|empresa|dinheiro|projeto)\b/.test(all)) topic='Assunto de negócios.';
-  else if (/\b(sentir|emoção|relação|vida|família|amor|medo|ansiedade)\b/.test(all)) topic='Assunto emocional.';
-  else if (/\b(ideia|criar|inventar|solução|pensar|plano|visão)\b/.test(all)) topic='Assunto criativo.';
-  const p=[mood,topic].filter(Boolean);
-  return p.length?`\n\nContexto: ${p.join(' ')}`:'';
+  const hints = [];
+
+  // Humor do Rone
+  if (/\b(não sei|confuso|perdido|difícil|complicado|trava|erro|bug|problema|ajuda|não consigo|tentei)\b/.test(all))
+    hints.push('Rone parece frustrado — seja atencioso e prático, não genérico.');
+  else if (/\b(ótimo|incrível|show|perfeito|funcionou|consegui|feliz|animado|amei|adorei)\b/.test(all))
+    hints.push('Rone está animado — combine com o tom, celebre junto.');
+  else if (/\b(urgente|rápido|preciso agora|prazo|deadline|hoje|corre|correndo)\b/.test(all))
+    hints.push('Rone está com urgência — seja direto, sem enrolação.');
+  else if (/\?/.test(txt) && txt.length < 80)
+    hints.push('Pergunta direta e curta — responda na mesma medida.');
+
+  // Tipo de assunto
+  if (/\b(código|programar|função|api|banco|deploy|git|script|sistema|app|bug|erro|debug|stack|framework|react|python|javascript|sql)\b/.test(all))
+    hints.push('Assunto técnico: Tony lidera, outros complementam com ângulos diferentes — segurança, impacto humano, estratégia.');
+  else if (/\b(negócio|vender|cliente|marketing|produto|empresa|dinheiro|projeto|meta|resultado|receita|mercado)\b/.test(all))
+    hints.push('Assunto de negócios: Bruce analisa riscos, Tony vai pro objetivo, Arlequina pensa nas pessoas envolvidas.');
+  else if (/\b(sentir|emoção|relação|vida|família|amor|medo|ansiedade|triste|feliz|sozinho|relacionamento)\b/.test(all))
+    hints.push('Assunto emocional: Arlequina lidera com empatia, Bruce surpreende com uma frase certeira, Tony tenta mas vai pro prático.');
+  else if (/\b(ideia|criar|inventar|solução|pensar|plano|visão|conceito|projeto novo|startup|inovar)\b/.test(all))
+    hints.push('Assunto criativo: Arlequina entra em modo explosão, Tony traz a lógica, Bruce é o cético construtivo.');
+
+  return hints.length ? `\n\n[Contexto: ${hints.join(' ')}]` : '';
 }
 
 // ── PESQUISA WEB ──
@@ -646,7 +690,7 @@ async function send() {
     const typ=showTyping(AGENTS[0]); await sleep(AGENTS[0].delay); typ.remove();
     try {
       const t=now();
-      tonyR=await callEdge(AGENTS[0].fn,{system:AGENTS[0].system, userMsg:baseMsg+'\n\nResponda como Tony:'});
+      tonyR=await callEdge(AGENTS[0].fn,{system:AGENTS[0].system, userMsg:baseMsg+'\n\nSua vez, Tony. Seja direto e curto:'});
       conv.messages.push({role:'agent',agent:'tony',text:tonyR,time:t});
       saveConvs(convs); addAgentEl(AGENTS[0],tonyR,t,true,true);
     } catch(e) { addErrEl(AGENTS[0],'Erro: '+e.message); }
@@ -658,9 +702,9 @@ async function send() {
     const typ=showTyping(AGENTS[1]); await sleep(AGENTS[1].delay); typ.remove();
     try {
       const t=now();
-      const tonyBlock = tonyR ? `\n\nTony acabou de responder: "${tonyR}"` : '';
+      const tonyBlock = tonyR ? `\n\nTony acabou de falar: "${tonyR}"` : '';
       arleR=await callEdge(AGENTS[1].fn,{system:AGENTS[1].system,
-        userMsg:baseMsg+tonyBlock+'\n\nResponda como Arlequina (chame Rone de pudinzinho — NUNCA de chefe). Se Tony já resolveu, reaja em uma linha:'
+        userMsg:baseMsg+tonyBlock+'\n\nSua vez, Arlequina. Reaja ao que Tony disse se fizer sentido, mas foque no Rone. Curto e na veia:'
       });
       conv.messages.push({role:'agent',agent:'arle',text:arleR,time:t});
       saveConvs(convs); addAgentEl(AGENTS[1],arleR,t,true,true);
@@ -673,9 +717,9 @@ async function send() {
     const typ=showTyping(AGENTS[2]); await sleep(AGENTS[2].delay); typ.remove();
     try {
       const t=now();
-      const othersBlock = [tonyR?`Tony disse: "${tonyR}"`:null, arleR?`Arlequina disse: "${arleR}"`:null].filter(Boolean).join('\n');
+      const othersBlock = [tonyR?`Tony: "${tonyR}"`:null, arleR?`Arlequina: "${arleR}"`:null].filter(Boolean).join('\n');
       const bruceR=await callEdge(AGENTS[2].fn,{system:AGENTS[2].system,
-        userMsg:baseMsg+(othersBlock?'\n\n'+othersBlock:'')+'\n\nResponda como Bruce, encontrando o insight que faltou. Se os outros cobriram tudo, seja breve:'
+        userMsg:baseMsg+(othersBlock?'\n\nO que os outros falaram:\n'+othersBlock:'')+'\n\nSua vez, Bruce. Se já cobriram tudo, uma linha resolve. Não repita nada do que foi dito:'
       });
       conv.messages.push({role:'agent',agent:'bruce',text:bruceR,time:t});
       saveConvs(convs); addAgentEl(AGENTS[2],bruceR,t,true,true);
@@ -683,6 +727,37 @@ async function send() {
   }
 
   setTimeout(()=>updateFocusUI(['tony','arle','bruce']),2000);
+
+  // Interação espontânea entre agentes (35% de chance quando os 3 responderam)
+  const allThreeActive = focusIds.includes('tony') && focusIds.includes('arle') && focusIds.includes('bruce');
+  if (allThreeActive && tonyR && arleR && Math.random() < 0.35) {
+    await sleep(1600);
+    // Escolhe quem reage: Tony, Arle ou Bruce — com pesos diferentes
+    const roll = Math.random();
+    let reactor, reactorPrompt;
+    if (roll < 0.38) {
+      // Tony reage à Arlequina
+      reactor = AGENTS[0];
+      reactorPrompt = `Arlequina acabou de falar no grupo: "${arleR}"\n\nMande UMA linha como Tony reagiria — pode ser irônico, concordar, discordar com humor ou ignorar com graça. Só uma linha, sem explicação.`;
+    } else if (roll < 0.72) {
+      // Arlequina reage ao Tony
+      reactor = AGENTS[1];
+      reactorPrompt = `Tony acabou de falar no grupo: "${tonyR}"\n\nMande UMA linha como Arlequina reagiria — pode ser apaixonada, provocar com carinho, discordar com drama ou concordar animada. Só uma linha, sem explicação.`;
+    } else {
+      // Bruce reage a um dos dois (escolhe aleatoriamente)
+      reactor = AGENTS[2];
+      const bruceTarget = Math.random() < 0.5 ? `Tony: "${tonyR}"` : `Arlequina: "${arleR}"`;
+      reactorPrompt = `${bruceTarget}\n\nMande UMA linha como Bruce reagiria — pode ser concordância seca, discordância firme, ou uma observação pontual. Só uma linha, direto.`;
+    }
+    const typ2 = showTyping(reactor); await sleep(850); typ2.remove();
+    try {
+      const t2 = now();
+      const reactR = await callEdge(reactor.fn, { system: reactor.system, userMsg: reactorPrompt });
+      conv.messages.push({role:'agent', agent:reactor.id, text:reactR, time:t2});
+      saveConvs(convs); addAgentEl(reactor, reactR, t2, true, true);
+    } catch(e) {}
+  }
+
   sbtn.disabled=false; ibox.focus();
 }
 
