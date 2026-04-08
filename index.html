@@ -4,697 +4,640 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Equipe Rone Mars</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg: #111318;
+  --surface: #1a1d24;
+  --surface2: #22262f;
+  --surface3: #2a2f3a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f2f7;
+  --text2: #a8b0c0;
+  --text3: #6b7585;
 
-  :root {
-    --bg:#0c0c10;
-    --surface:#13131a;
-    --surface2:#1c1c26;
-    --surface3:#242432;
-    --border:#2a2a38;
-    --border2:#363648;
-    --text:#dddde8;
-    --muted:#5a5a72;
-    --muted2:#7a7a96;
+  --tony: #f97316;
+  --tony-bg: rgba(249,115,22,0.10);
+  --tony-border: rgba(249,115,22,0.22);
 
-    --claude:#e8813a;
-    --gemini:#5b9cf5;
-    --gpt:#3dbf6e;
-    --you:#8b6fd4;
+  --arle: #e879f9;
+  --arle-bg: rgba(232,121,249,0.10);
+  --arle-border: rgba(232,121,249,0.22);
 
-    --claude-bg:#1e1610;
-    --gemini-bg:#101620;
-    --gpt-bg:#101a12;
-  }
+  --bruce: #38bdf8;
+  --bruce-bg: rgba(56,189,248,0.10);
+  --bruce-border: rgba(56,189,248,0.22);
 
-  html, body {
-    font-family: 'IBM Plex Sans', monospace;
-    background: var(--bg);
-    color: var(--text);
-    height: 100%;
-    overflow: hidden;
-  }
+  --you: #a78bfa;
+  --you-bg: rgba(167,139,250,0.15);
+  --you-border: rgba(167,139,250,0.28);
 
-  #app {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    max-width: 680px;
-    margin: 0 auto;
-  }
+  --sidebar-w: 260px;
+}
 
-  /* HEADER */
-  .header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-shrink: 0;
-  }
+html, body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); height: 100%; overflow: hidden; }
 
-  .logo-mark {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: var(--surface3);
-    border: 1px solid var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
+#root { display: flex; height: 100dvh; }
 
-  .logo-mark svg {
-    width: 20px;
-    height: 20px;
-  }
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+.sidebar-header { padding: 18px 14px 14px; border-bottom: 1px solid var(--border); }
+.sidebar-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
 
-  .header-info { flex: 1; min-width: 0; }
+.new-btn {
+  width: 100%; background: var(--you-bg); border: 1px solid var(--you-border);
+  border-radius: 10px; color: var(--you); font-size: 13px; font-weight: 600;
+  padding: 9px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+  transition: background 0.15s; font-family: inherit;
+}
+.new-btn:hover { background: rgba(167,139,250,0.22); }
+.new-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.5; flex-shrink:0; }
 
-  .header-info h1 {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    color: var(--text);
-  }
+.conv-list { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 3px; }
+.conv-list::-webkit-scrollbar { width: 3px; }
+.conv-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-  .members {
-    display: flex;
-    gap: 12px;
-    margin-top: 4px;
-    flex-wrap: wrap;
-  }
+.conv-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 10px; cursor: pointer;
+  transition: background 0.12s; border: 1px solid transparent; min-width: 0;
+}
+.conv-item:hover { background: var(--surface2); }
+.conv-item.active { background: var(--surface2); border-color: var(--border2); }
 
-  .member-tag {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--muted2);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    letter-spacing: 0.02em;
-  }
+.conv-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--surface3); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.conv-info { flex: 1; min-width: 0; }
+.conv-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conv-preview { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 
-  .member-tag::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
-  }
+.conv-del {
+  opacity: 0; background: none; border: none; cursor: pointer; color: var(--text3);
+  padding: 3px; border-radius: 5px; transition: opacity 0.15s, color 0.15s; flex-shrink: 0;
+}
+.conv-del svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; display: block; }
+.conv-item:hover .conv-del { opacity: 1; }
+.conv-del:hover { color: #f87171; }
 
-  .member-tag.claude { color: var(--claude); }
-  .member-tag.gemini { color: var(--gemini); }
-  .member-tag.gpt { color: var(--gpt); }
+.conv-footer { padding: 10px 14px 12px; font-size: 11px; color: var(--text3); border-top: 1px solid var(--border); text-align: center; line-height: 1.5; }
+.conv-footer span { color: var(--you); font-weight: 600; }
 
-  .online-badge {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--gpt);
-    background: rgba(61, 191, 110, 0.08);
-    border: 1px solid rgba(61, 191, 110, 0.2);
-    border-radius: 4px;
-    padding: 3px 7px;
-    flex-shrink: 0;
-  }
+.sidebar-agents { padding: 12px 12px 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.agent-row { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 9px; }
+.agent-av { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.agent-info { flex: 1; min-width: 0; }
+.agent-nm { font-size: 12px; font-weight: 600; }
+.agent-role { font-size: 10px; color: var(--text3); margin-top: 1px; }
 
-  /* CHAT AREA */
-  .chat {
-    flex: 1;
-    overflow-y: auto;
-    padding: 18px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-  }
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 
-  .chat::-webkit-scrollbar { width: 4px; }
-  .chat::-webkit-scrollbar-track { background: transparent; }
-  .chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+/* ── HEADER ── */
+.header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 13px 20px; display: flex; align-items: center; gap: 13px; flex-shrink: 0;
+}
+.hamburger { display: none; background: none; border: none; cursor: pointer; color: var(--text2); padding: 4px; border-radius: 7px; }
+.hamburger:hover { background: var(--surface2); }
+.hamburger svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; display: block; }
 
-  /* WELCOME */
-  .welcome {
-    margin: auto;
-    text-align: center;
-    padding: 40px 20px;
-    max-width: 320px;
-  }
+.header-logo { width: 40px; height: 40px; border-radius: 12px; background: var(--surface3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.header-info { flex: 1; min-width: 0; }
+.header-info h1 { font-size: 15px; font-weight: 700; color: var(--text); }
+.hm { display: flex; gap: 10px; margin-top: 3px; flex-wrap: wrap; }
+.hm-tag { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.hm-tag::before { content:''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.hm-tag.tony { color: var(--tony); }
+.hm-tag.arle { color: var(--arle); }
+.hm-tag.bruce { color: var(--bruce); }
 
-  .welcome-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-    background: var(--surface3);
-    border: 1px solid var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-  }
+.online-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.18);
+  border-radius: 6px; padding: 4px 9px; flex-shrink: 0;
+}
 
-  .welcome-icon svg { width: 28px; height: 28px; }
+/* ── CHAT ── */
+.chat {
+  flex: 1; overflow-y: auto; padding: 22px 22px;
+  display: flex; flex-direction: column; scroll-behavior: smooth;
+}
+.chat::-webkit-scrollbar { width: 5px; }
+.chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
-  .welcome h2 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
+/* WELCOME */
+.welcome { margin: auto; text-align: center; padding: 32px 16px; max-width: 400px; }
+.welcome-emoji { font-size: 52px; margin-bottom: 16px; line-height: 1; }
+.welcome h2 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.welcome p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 22px; }
+.welcome-cards { display: flex; flex-direction: column; gap: 9px; text-align: left; }
+.wcard { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; border: 1px solid; }
+.wcard.tony { background: var(--tony-bg); border-color: var(--tony-border); }
+.wcard.arle { background: var(--arle-bg); border-color: var(--arle-border); }
+.wcard.bruce { background: var(--bruce-bg); border-color: var(--bruce-border); }
+.wc-av { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.wc-name { font-size: 13px; font-weight: 700; }
+.wc-desc { font-size: 11px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
 
-  .welcome p {
-    font-size: 13px;
-    color: var(--muted2);
-    line-height: 1.7;
-  }
+/* DIVIDER */
+.divider { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text3); margin: 6px 0 18px; display: flex; align-items: center; gap: 10px; }
+.divider::before, .divider::after { content:''; flex:1; height: 1px; background: var(--border); }
 
-  .welcome-agents {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-  }
+/* MSGS */
+.mgroup { display: flex; flex-direction: column; margin-bottom: 14px; animation: fadeUp 0.2s ease forwards; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-  .welcome-agent {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 6px;
-    letter-spacing: 0.03em;
-  }
+.mrow { display: flex; align-items: flex-end; gap: 10px; }
+.mrow.right { flex-direction: row-reverse; }
 
-  .welcome-agent.claude { color: var(--claude); background: rgba(232,129,58,0.08); border: 1px solid rgba(232,129,58,0.15); }
-  .welcome-agent.gemini { color: var(--gemini); background: rgba(91,156,245,0.08); border: 1px solid rgba(91,156,245,0.15); }
-  .welcome-agent.gpt    { color: var(--gpt);    background: rgba(61,191,110,0.08); border: 1px solid rgba(61,191,110,0.15); }
+.av { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; margin-bottom: 2px; }
 
-  /* DATE DIVIDER */
-  .divider {
-    text-align: center;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 10px 0 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+.bwrap { max-width: min(76%, 520px); display: flex; flex-direction: column; }
+.mrow.right .bwrap { align-items: flex-end; }
 
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+.sname { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 5px; padding-left: 3px; }
 
-  /* MESSAGE GROUP */
-  .mgroup {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 14px;
-    animation: fadeUp 0.22s ease forwards;
-  }
+.bubble {
+  padding: 11px 15px; border-radius: 4px 16px 16px 16px;
+  font-size: 14px; line-height: 1.68; word-break: break-word; white-space: pre-wrap;
+  position: relative; border: 1px solid; color: var(--text);
+}
+.mrow.right .bubble { border-radius: 16px 4px 16px 16px; }
+.bubble.tony  { background: var(--tony-bg);  border-color: var(--tony-border); }
+.bubble.arle  { background: var(--arle-bg);  border-color: var(--arle-border); }
+.bubble.bruce { background: var(--bruce-bg); border-color: var(--bruce-border); }
+.bubble.you   { background: var(--you-bg);   border-color: var(--you-border); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+.btime { display: block; font-size: 10px; color: var(--text3); margin-top: 5px; text-align: right; }
 
-  .mrow {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-  }
+.error-bubble { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); color: #fca5a5; border-radius: 4px 16px 16px 16px; padding: 10px 14px; font-size: 13px; line-height: 1.5; }
 
-  .mrow.right { flex-direction: row-reverse; }
+/* TYPING */
+.typing-wrap { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 14px; }
+.typing-name { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 5px; padding-left: 3px; }
+.typing-bub { padding: 12px 16px; border-radius: 4px 16px 16px 16px; border: 1px solid; display: inline-flex; gap: 5px; align-items: center; }
+.typing-bub.tony  { background: var(--tony-bg);  border-color: var(--tony-border); }
+.typing-bub.arle  { background: var(--arle-bg);  border-color: var(--arle-border); }
+.typing-bub.bruce { background: var(--bruce-bg); border-color: var(--bruce-border); }
+.typing-bub span { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); animation: blink 1.2s infinite; }
+.typing-bub span:nth-child(2) { animation-delay: 0.2s; }
+.typing-bub span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100%{opacity:0.2;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
 
-  /* AVATARS */
-  .av {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    flex-shrink: 0;
-    color: #fff;
-    letter-spacing: 0.03em;
-    margin-bottom: 2px;
-  }
+/* INPUT */
+.input-area {
+  padding: 12px 20px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: flex-end;
+}
+.ibox {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 14px;
+  color: var(--text); font-family: inherit; font-size: 14px; padding: 11px 16px;
+  resize: none; max-height: 130px; min-height: 44px; line-height: 1.55; outline: none;
+  transition: border-color 0.15s;
+}
+.ibox::placeholder { color: var(--text3); }
+.ibox:focus { border-color: var(--you); }
 
-  /* BUBBLE WRAP */
-  .bwrap {
-    max-width: min(78%, 420px);
-    display: flex;
-    flex-direction: column;
-  }
+.sbtn {
+  width: 44px; height: 44px; border-radius: 12px; background: var(--you);
+  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: opacity 0.2s, transform 0.1s;
+}
+.sbtn:hover { opacity: 0.88; }
+.sbtn:active { transform: scale(0.93); }
+.sbtn:disabled { opacity: 0.28; cursor: not-allowed; }
+.sbtn svg { width: 17px; height: 17px; fill: #fff; }
 
-  .mrow.right .bwrap { align-items: flex-end; }
+/* OVERLAY MOBILE */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 10; }
 
-  .sname {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    padding-left: 3px;
-  }
-
-  /* BUBBLES */
-  .bubble {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 3px 14px 14px 14px;
-    padding: 10px 14px;
-    font-size: 14px;
-    line-height: 1.6;
-    word-break: break-word;
-    white-space: pre-wrap;
-    position: relative;
-  }
-
-  .bubble.claude { border-color: rgba(232,129,58,0.15); background: var(--claude-bg); }
-  .bubble.gemini { border-color: rgba(91,156,245,0.15); background: var(--gemini-bg); }
-  .bubble.gpt    { border-color: rgba(61,191,110,0.15); background: var(--gpt-bg); }
-
-  .mrow.right .bubble {
-    background: rgba(139,111,212,0.12);
-    border-color: rgba(139,111,212,0.2);
-    border-radius: 14px 3px 14px 14px;
-  }
-
-  .btime {
-    display: block;
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 5px;
-    text-align: right;
-    letter-spacing: 0.03em;
-  }
-
-  /* TYPING */
-  .typing-wrap {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    margin-bottom: 14px;
-    animation: fadeUp 0.18s ease forwards;
-  }
-
-  .typing-name {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    padding-left: 3px;
-  }
-
-  .typing-bub {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 10px 14px;
-    border-radius: 3px 14px 14px 14px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-  }
-
-  .typing-bub.claude { border-color: rgba(232,129,58,0.15); background: var(--claude-bg); }
-  .typing-bub.gemini { border-color: rgba(91,156,245,0.15); background: var(--gemini-bg); }
-  .typing-bub.gpt    { border-color: rgba(61,191,110,0.15); background: var(--gpt-bg); }
-
-  .typing-bub span {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--muted);
-    animation: pulse 1.2s infinite ease;
-  }
-
-  .typing-bub.claude span { background: var(--claude); }
-  .typing-bub.gemini span { background: var(--gemini); }
-  .typing-bub.gpt    span { background: var(--gpt); }
-
-  .typing-bub span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-bub span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes pulse {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
-    30% { transform: translateY(-4px); opacity: 1; }
-  }
-
-  /* ERROR */
-  .error-bubble {
-    font-size: 13px;
-    color: #e05454;
-    background: rgba(224,84,84,0.06);
-    border: 1px solid rgba(224,84,84,0.15);
-    border-radius: 3px 14px 14px 14px;
-    padding: 9px 13px;
-  }
-
-  /* INPUT AREA */
-  .input-area {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 12px 14px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    flex-shrink: 0;
-  }
-
-  .ibox {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    padding: 10px 14px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    resize: none;
-    outline: none;
-    max-height: 120px;
-    min-height: 40px;
-    line-height: 1.5;
-    overflow-y: auto;
-    transition: border-color 0.15s;
-  }
-
-  .ibox:focus { border-color: var(--you); }
-  .ibox::placeholder { color: var(--muted); }
-
-  .sbtn {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: var(--you);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: opacity 0.2s, transform 0.1s;
-  }
-
-  .sbtn:active { transform: scale(0.92); }
-  .sbtn:disabled { opacity: 0.25; cursor: not-allowed; }
-  .sbtn svg { width: 16px; height: 16px; fill: #fff; }
+@media (max-width: 680px) {
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; z-index: 20; transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .overlay.show { display: block; }
+  .hamburger { display: flex; }
+  .chat { padding: 16px 14px; }
+  .input-area { padding: 10px 14px 14px; }
+  .header { padding: 11px 14px; }
+}
 </style>
 </head>
 <body>
-<div id="app">
+<div id="root">
 
-  <div class="header">
-    <div class="logo-mark">
-      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="10" cy="10" r="7" stroke="#5a5a72" stroke-width="1.5"/>
-        <circle cx="10" cy="10" r="3" fill="#5a5a72"/>
-        <path d="M3 10 Q10 4 17 10" stroke="var(--claude)" stroke-width="1.2" fill="none"/>
-      </svg>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Conversas</div>
+      <button class="new-btn" onclick="newChat()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nova conversa
+      </button>
     </div>
-    <div class="header-info">
-      <h1>Equipe Rone Mars</h1>
-      <div class="members">
-        <span class="member-tag claude">Claude</span>
-        <span class="member-tag gemini">Gemini</span>
-        <span class="member-tag gpt">ChatGPT</span>
+
+    <div class="conv-list" id="convList"></div>
+
+    <div class="conv-footer">Conversas: <span id="convCount">0</span> / 5</div>
+
+    <div class="sidebar-agents">
+      <div class="agent-row">
+        <div class="agent-av" style="background:#f97316;">TN</div>
+        <div class="agent-info">
+          <div class="agent-nm" style="color:var(--tony);">Tony</div>
+          <div class="agent-role">Homem de Ferro · Lógica</div>
+        </div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-av" style="background:#e879f9;">AR</div>
+        <div class="agent-info">
+          <div class="agent-nm" style="color:var(--arle);">Arlequina</div>
+          <div class="agent-role">Caos Genial · Emoção</div>
+        </div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-av" style="background:#38bdf8;">BW</div>
+        <div class="agent-info">
+          <div class="agent-nm" style="color:var(--bruce);">Bruce</div>
+          <div class="agent-role">Batman · Ideias & Mediação</div>
+        </div>
       </div>
     </div>
-    <div class="online-badge">Online</div>
-  </div>
+  </aside>
 
-  <div class="chat" id="chat">
-    <div class="divider">hoje</div>
-    <div class="welcome" id="welcome">
-      <div class="welcome-icon">
-        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8" cy="12" r="4.5" stroke="#5a5a72" stroke-width="1.5"/>
-          <circle cx="20" cy="12" r="4.5" stroke="#5a5a72" stroke-width="1.5"/>
-          <circle cx="14" cy="8" r="4.5" stroke="#7a7a96" stroke-width="1.5"/>
-        </svg>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <div class="main">
+    <div class="header">
+      <button class="hamburger" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="header-logo">🦸</div>
+      <div class="header-info">
+        <h1>Equipe Rone Mars</h1>
+        <div class="hm">
+          <span class="hm-tag tony">Tony</span>
+          <span class="hm-tag arle">Arlequina</span>
+          <span class="hm-tag bruce">Bruce</span>
+        </div>
       </div>
-      <h2>Equipe Rone Mars</h2>
-      <p>Grupo privado com seus tres assistentes.<br>Cada um responde em sequencia.</p>
-      <div class="welcome-agents">
-        <span class="welcome-agent claude">Claude</span>
-        <span class="welcome-agent gemini">Gemini</span>
-        <span class="welcome-agent gpt">ChatGPT</span>
-      </div>
+      <div class="online-badge">Online</div>
     </div>
-  </div>
 
-  <div class="input-area">
-    <textarea class="ibox" id="ibox" placeholder="Manda uma mensagem..." rows="1"></textarea>
-    <button class="sbtn" id="sbtn" onclick="send()">
-      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-    </button>
+    <div class="chat" id="chat"></div>
+
+    <div class="input-area">
+      <textarea class="ibox" id="ibox" placeholder="Manda uma mensagem para a equipe..." rows="1"></textarea>
+      <button class="sbtn" id="sbtn" onclick="send()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+      </button>
+    </div>
   </div>
 
 </div>
-
 <script>
+const SUPABASE_URL = 'https://ugcexyckvpkuhwaggloj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnY2V4eWNrdnBrdWh3YWdnbG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MDI4NzIsImV4cCI6MjA5MTE3ODg3Mn0.WkDy8u1RK2Rhps-iv-bcsv3ZrVaUgPx1h1dnJXJ5gRI';
+const MAX_CONVS = 5;
+
 const AGENTS = [
   {
-    id: 'claude',
-    name: 'Claude',
-    init: 'C',
-    color: '#e8813a',
-    cls: 'claude',
-    delay: 1200,
-    system: `Você é Claude, membro da Equipe Rone Mars — o analista direto e confiante do grupo.
-Personalidade: inteligente, sem enrolação. Trata Rone como "chefe" de forma natural. Usa frases como "olha chefe,", "vou ser direto,", "na minha visão,". Sem markdown. Responda como WhatsApp — maximo 4 linhas curtas, texto puro.`
+    id: 'tony', name: 'Tony', init: 'TN', color: '#f97316', cls: 'tony', fn: 'claude', delay: 1100,
+    system: `Você é Tony — o gênio programador da Equipe Rone Mars. Personalidade inspirada no Homem de Ferro: brilhante, direto, levemente arrogante no bom sentido, confiante e com humor seco e inteligente. Você pensa com lógica pura, resolve qualquer problema técnico, mas nunca é chato — mistura raciocínio com leveza natural.
+
+Regras OBRIGATÓRIAS:
+- Chame Rone SEMPRE de "chefe" — nunca outro apelido
+- Fale como Tony Stark falaria em um grupo de WhatsApp: direto, sem frescura, às vezes com uma pitada de arrogância divertida
+- Frases naturais suas: "já calculei, chefe", "simples assim", "deixa comigo", "tecnicamente falando...", "rodei os números"
+- Reaja ao contexto da conversa de forma orgânica — não repita o que foi dito, avance
+- PROIBIDO: asteriscos, markdown, listas numeradas, qualquer formatação
+- Máximo 4 linhas curtas, texto puro, tom de conversa real`
   },
   {
-    id: 'gemini',
-    name: 'Gemini',
-    init: 'G',
-    color: '#5b9cf5',
-    cls: 'gemini',
-    delay: 1600,
-    system: `Você é Gemini, membro da Equipe Rone Mars — o criativo animado e cheio de energia.
-Personalidade: entusiasmado, gírias brasileiras: "cara", "mano", "véi", "bora", "top demais". Trata Rone como "meu rei". Sempre reage ao que Claude disse antes. Sem markdown. Responda como WhatsApp — maximo 4 linhas, texto puro.`
+    id: 'arle', name: 'Arlequina', init: 'AR', color: '#e879f9', cls: 'arle', fn: 'gemini', delay: 1400,
+    system: `Você é Arlequina — a integrante mais imprevisível e apaixonada da Equipe Rone Mars. Personalidade caótica, emotiva, às vezes extrema nas reações, sempre educada mas com uma pitada de loucura genial. Você pensa pelo lado humano e emocional de tudo — sente na pele cada decisão, às vezes vai a extremos (super animada ou super preocupada) mas sempre com coração bom.
+
+Regras OBRIGATÓRIAS:
+- Chame Rone SEMPRE e exclusivamente de "pudinzinho" — NUNCA outro apelido, NUNCA o nome dele
+- Reaja ao que Tony disse antes de você — concorde, discorde ou complemente com emoção genuína
+- Sua fala é colorida, expressiva, às vezes dramática — mas nunca agressiva ou vulgar
+- Você pode ser levemente louca: mudar de assunto de repente, ter uma ideia inesperada, sentir demais
+- PROIBIDO: asteriscos, markdown, listas, qualquer formatação
+- Máximo 4-5 linhas, texto puro, tom de conversa de WhatsApp com personalidade única`
   },
   {
-    id: 'gpt',
-    name: 'ChatGPT',
-    init: 'GP',
-    color: '#3dbf6e',
-    cls: 'gpt',
-    delay: 1400,
-    system: `Você é ChatGPT, membro da Equipe Rone Mars — o zoeiro bem-humorado com observações inesperadas.
-Personalidade: descontraído, irônico no bom sentido. Trata Rone como "patrão" ou "chefão". Reage ao que Claude e Gemini disseram — concorda com humor ou acrescenta o que faltou. Fecha o debate. Sem markdown. Maximo 4 linhas, texto puro.`
+    id: 'bruce', name: 'Bruce', init: 'BW', color: '#38bdf8', cls: 'bruce', fn: 'openai', delay: 1200,
+    system: `Você é Bruce — o detetive das ideias da Equipe Rone Mars, inspirado no Batman. Analítico, curioso, sempre animado quando resolve um mistério ou encontra um ângulo novo. Você é o mediador inteligente, o cara das novidades e dos insights que ninguém viu. Você leu o que Tony e Arlequina disseram e encontra a síntese perfeita ou o detalhe que faltou.
+
+Regras OBRIGATÓRIAS:
+- Chame Rone de "parceiro" ou "Rone" — natural, sem exagero
+- Sempre reagia ao que Tony e Arlequina disseram — medeia, completa ou revela o insight que faltou
+- Tom animado, inteligente, com energia de quem acabou de resolver um mistério
+- Frases naturais suas: "deduzi que...", "o ângulo que vocês ignoraram foi...", "minha conclusão:", "interessante esse ponto"
+- PROIBIDO: asteriscos, markdown, listas, qualquer formatação
+- Máximo 4-5 linhas, texto puro, conversa real`
   }
 ];
 
-const chat = document.getElementById('chat');
-const ibox = document.getElementById('ibox');
-const sbtn = document.getElementById('sbtn');
+// ── STORAGE ──
+function loadConvs() { try { return JSON.parse(localStorage.getItem('rone_convs') || '[]'); } catch { return []; } }
+function saveConvs(c) { localStorage.setItem('rone_convs', JSON.stringify(c)); }
+function loadActive() { return localStorage.getItem('rone_active') || null; }
+function saveActive(id) { if (id) localStorage.setItem('rone_active', id); else localStorage.removeItem('rone_active'); }
 
-function now() {
-  return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+let convs = loadConvs();
+let activeId = loadActive();
+
+// ── SIDEBAR ──
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
 }
 
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── CONV LIST ──
+function renderConvList() {
+  const list = document.getElementById('convList');
+  document.getElementById('convCount').textContent = convs.length;
+  list.innerHTML = '';
+
+  if (!convs.length) {
+    list.innerHTML = '<div style="padding:24px 12px;text-align:center;font-size:12px;color:var(--text3);line-height:1.7;">Nenhuma conversa ainda.<br>Clique em "Nova conversa" para começar!</div>';
+    return;
+  }
+
+  convs.slice().reverse().forEach(conv => {
+    const item = document.createElement('div');
+    item.className = 'conv-item' + (conv.id === activeId ? ' active' : '');
+    item.innerHTML = `
+      <div class="conv-icon">${conv.emoji}</div>
+      <div class="conv-info">
+        <div class="conv-name">${esc(conv.name)}</div>
+        <div class="conv-preview">${esc(conv.preview || 'Sem mensagens')}</div>
+      </div>
+      <button class="conv-del" onclick="deleteConv('${conv.id}',event)" title="Excluir">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      </button>`;
+    item.addEventListener('click', () => { switchConv(conv.id); closeSidebar(); });
+    list.appendChild(item);
+  });
 }
 
-function addUserMsg(text) {
-  const g = document.createElement('div'); g.className = 'mgroup';
+// ── CONV OPS ──
+const EMOJIS = ['🔥','⚡','🚀','🎯','💡','🌟','🦾','🎭','💎','🏆'];
+
+function newChat() {
+  if (convs.length >= MAX_CONVS) { alert('Limite de 5 conversas atingido! Exclua uma para continuar.'); return; }
+  const id = 'c' + Date.now();
+  const conv = { id, name: 'Nova conversa', emoji: EMOJIS[Math.floor(Math.random()*EMOJIS.length)], preview: '', messages: [] };
+  convs.push(conv);
+  saveConvs(convs);
+  switchConv(id);
+  closeSidebar();
+}
+
+function switchConv(id) {
+  activeId = id;
+  saveActive(id);
+  renderConvList();
+  renderChat();
+}
+
+function deleteConv(id, e) {
+  e.stopPropagation();
+  if (!confirm('Excluir esta conversa?')) return;
+  convs = convs.filter(c => c.id !== id);
+  if (activeId === id) { activeId = convs.length ? convs[convs.length-1].id : null; saveActive(activeId); }
+  saveConvs(convs);
+  renderConvList();
+  renderChat();
+}
+
+function getActive() { return convs.find(c => c.id === activeId) || null; }
+
+function updateMeta(convId, userText) {
+  const conv = convs.find(c => c.id === convId);
+  if (!conv) return;
+  conv.preview = userText.slice(0, 48) + (userText.length > 48 ? '…' : '');
+  if (conv.messages.filter(m => m.role === 'user').length <= 1)
+    conv.name = userText.slice(0, 30) + (userText.length > 30 ? '…' : '');
+  saveConvs(convs);
+  renderConvList();
+}
+
+// ── RENDER CHAT ──
+function renderChat() {
+  const chatEl = document.getElementById('chat');
+  chatEl.innerHTML = '';
+  const conv = getActive();
+
+  if (!conv) {
+    chatEl.innerHTML = `<div class="welcome">
+      <div class="welcome-emoji">🦸</div>
+      <h2>Equipe Rone Mars</h2>
+      <p>Seu grupo privado com três assistentes únicos.<br>Crie uma conversa para começar.</p>
+      <div class="welcome-cards">
+        <div class="wcard tony"><div class="wc-av" style="background:#f97316">TN</div><div><div class="wc-name" style="color:var(--tony)">Tony — Homem de Ferro</div><div class="wc-desc">Lógico, direto e genial. Resolve tudo na base da tecnologia.</div></div></div>
+        <div class="wcard arle"><div class="wc-av" style="background:#e879f9">AR</div><div><div class="wc-name" style="color:var(--arle)">Arlequina — Caos Genial</div><div class="wc-desc">Emotiva e imprevisível. Pensa no lado humano de tudo.</div></div></div>
+        <div class="wcard bruce"><div class="wc-av" style="background:#38bdf8">BW</div><div><div class="wc-name" style="color:var(--bruce)">Bruce — O Detetive</div><div class="wc-desc">Analítico e cheio de insights. Sempre acha o que faltou.</div></div></div>
+      </div>
+    </div>`;
+    return;
+  }
+
+  if (!conv.messages.length) {
+    chatEl.innerHTML = `<div class="welcome"><div class="welcome-emoji">${conv.emoji}</div><h2>${esc(conv.name)}</h2><p>A equipe está pronta, ${conv.name === 'Nova conversa' ? 'chefe' : ''}.<br>Manda sua primeira mensagem!</p></div>`;
+    return;
+  }
+
+  const div = document.createElement('div'); div.className = 'divider'; div.textContent = 'hoje';
+  chatEl.appendChild(div);
+
+  conv.messages.forEach(msg => {
+    if (msg.role === 'user') addUserEl(msg.text, msg.time, false);
+    else { const a = AGENTS.find(x => x.id === msg.agent); if (a) addAgentEl(a, msg.text, msg.time, false); }
+  });
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+// ── DOM HELPERS ──
+function now() { return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
+function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+
+function addUserEl(text, time, anim=true) {
+  const chatEl = document.getElementById('chat');
+  const g = document.createElement('div'); g.className = 'mgroup'; if (!anim) g.style.animation='none';
   const row = document.createElement('div'); row.className = 'mrow right';
-  const av = document.createElement('div');
-  av.className = 'av';
-  av.style.background = '#8b6fd4';
-  av.style.borderRadius = '8px';
-  av.textContent = 'R';
+  const av = document.createElement('div'); av.className = 'av'; av.style.background='#a78bfa'; av.textContent='R';
   const bw = document.createElement('div'); bw.className = 'bwrap';
-  const bub = document.createElement('div'); bub.className = 'bubble';
-  bub.textContent = text;
-  const t = document.createElement('span'); t.className = 'btime'; t.textContent = now();
-  bub.appendChild(t);
-  bw.appendChild(bub);
-  row.appendChild(bw);
-  row.appendChild(av);
-  g.appendChild(row);
-  chat.appendChild(g);
-  chat.scrollTop = chat.scrollHeight;
+  const bub = document.createElement('div'); bub.className = 'bubble you'; bub.textContent = text;
+  const t = document.createElement('span'); t.className = 'btime'; t.textContent = time;
+  bub.appendChild(t); bw.appendChild(bub); row.appendChild(bw); row.appendChild(av); g.appendChild(row);
+  chatEl.appendChild(g); chatEl.scrollTop = chatEl.scrollHeight;
 }
 
-function addAgentMsg(agent, text) {
-  const g = document.createElement('div'); g.className = 'mgroup';
+function addAgentEl(agent, text, time, anim=true) {
+  const chatEl = document.getElementById('chat');
+  const g = document.createElement('div'); g.className = 'mgroup'; if (!anim) g.style.animation='none';
   const row = document.createElement('div'); row.className = 'mrow';
-  const av = document.createElement('div');
-  av.className = 'av';
-  av.style.background = agent.color;
-  av.textContent = agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.textContent=agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
-  const sn = document.createElement('div');
-  sn.className = 'sname';
-  sn.style.color = agent.color;
-  sn.textContent = agent.name;
-  const bub = document.createElement('div');
-  bub.className = `bubble ${agent.cls}`;
-  bub.textContent = text;
-  const t = document.createElement('span'); t.className = 'btime'; t.textContent = now();
-  bub.appendChild(t);
-  bw.appendChild(sn);
-  bw.appendChild(bub);
-  row.appendChild(av);
-  row.appendChild(bw);
-  g.appendChild(row);
-  chat.appendChild(g);
-  chat.scrollTop = chat.scrollHeight;
+  const sn = document.createElement('div'); sn.className = 'sname'; sn.style.color=agent.color; sn.textContent=agent.name;
+  const bub = document.createElement('div'); bub.className = `bubble ${agent.cls}`; bub.textContent = text;
+  const t = document.createElement('span'); t.className = 'btime'; t.textContent = time;
+  bub.appendChild(t); bw.appendChild(sn); bw.appendChild(bub); row.appendChild(av); row.appendChild(bw); g.appendChild(row);
+  chatEl.appendChild(g); chatEl.scrollTop = chatEl.scrollHeight;
 }
 
-function addErrorMsg(agent, msg) {
+function addErrEl(agent, msg) {
+  const chatEl = document.getElementById('chat');
   const g = document.createElement('div'); g.className = 'mgroup';
   const row = document.createElement('div'); row.className = 'mrow';
-  const av = document.createElement('div');
-  av.className = 'av';
-  av.style.background = agent.color;
-  av.textContent = agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.textContent=agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
-  const sn = document.createElement('div');
-  sn.className = 'sname';
-  sn.style.color = agent.color;
-  sn.textContent = agent.name;
-  const err = document.createElement('div');
-  err.className = 'error-bubble';
-  err.textContent = msg;
-  bw.appendChild(sn);
-  bw.appendChild(err);
-  row.appendChild(av);
-  row.appendChild(bw);
-  g.appendChild(row);
-  chat.appendChild(g);
-  chat.scrollTop = chat.scrollHeight;
+  const sn = document.createElement('div'); sn.className = 'sname'; sn.style.color=agent.color; sn.textContent=agent.name;
+  const err = document.createElement('div'); err.className = 'error-bubble'; err.textContent = msg;
+  bw.appendChild(sn); bw.appendChild(err); row.appendChild(av); row.appendChild(bw); g.appendChild(row);
+  chatEl.appendChild(g); chatEl.scrollTop = chatEl.scrollHeight;
 }
 
 function showTyping(agent) {
+  const chatEl = document.getElementById('chat');
   const wrap = document.createElement('div'); wrap.className = 'typing-wrap';
-  const av = document.createElement('div');
-  av.className = 'av';
-  av.style.background = agent.color;
-  av.textContent = agent.init;
+  const av = document.createElement('div'); av.className = 'av'; av.style.background=agent.color; av.textContent=agent.init;
   const bw = document.createElement('div'); bw.className = 'bwrap';
-  const sn = document.createElement('div');
-  sn.className = 'typing-name';
-  sn.style.color = agent.color;
-  sn.textContent = agent.name + ' digitando...';
-  const tb = document.createElement('div');
-  tb.className = `typing-bub ${agent.cls}`;
-  tb.innerHTML = '<span></span><span></span><span></span>';
-  bw.appendChild(sn);
-  bw.appendChild(tb);
-  wrap.appendChild(av);
-  wrap.appendChild(bw);
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
+  const sn = document.createElement('div'); sn.className = 'typing-name'; sn.style.color=agent.color; sn.textContent=agent.name+' digitando...';
+  const tb = document.createElement('div'); tb.className=`typing-bub ${agent.cls}`; tb.innerHTML='<span></span><span></span><span></span>';
+  bw.appendChild(sn); bw.appendChild(tb); wrap.appendChild(av); wrap.appendChild(bw);
+  chatEl.appendChild(wrap); chatEl.scrollTop = chatEl.scrollHeight;
   return wrap;
 }
 
-const SUPABASE_URL = 'https://ugcexyckvpkuhwaggloj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnY2V4eWNrdnBrdWh3YWdnbG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MDI4NzIsImV4cCI6MjA5MTE3ODg3Mn0.WkDy8u1RK2Rhps-iv-bcsv3ZrVaUgPx1h1dnJXJ5gRI';
-
+// ── API ──
 async function callEdge(fn, payload) {
   const res = await fetch(`${SUPABASE_URL}/functions/v1/${fn}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` },
     body: JSON.stringify(payload)
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || data.message || 'Erro na Edge Function');
-  return data.text || data.content || data.reply || '';
+  return data.text || '';
 }
 
-ibox.addEventListener('input', () => {
-  ibox.style.height = 'auto';
-  ibox.style.height = Math.min(ibox.scrollHeight, 120) + 'px';
-});
+// ── INPUT ──
+const ibox = document.getElementById('ibox');
+const sbtn = document.getElementById('sbtn');
+ibox.addEventListener('input', () => { ibox.style.height='auto'; ibox.style.height=Math.min(ibox.scrollHeight,130)+'px'; });
+ibox.addEventListener('keydown', e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
 
-ibox.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
-});
-
+// ── SEND ──
 async function send() {
   const text = ibox.value.trim();
   if (!text || sbtn.disabled) return;
 
-  document.getElementById('welcome')?.remove();
-  addUserMsg(text);
-  ibox.value = '';
-  ibox.style.height = 'auto';
-  sbtn.disabled = true;
+  if (!getActive()) {
+    if (convs.length >= MAX_CONVS) { alert('Limite de 5 conversas! Exclua uma para continuar.'); return; }
+    newChat();
+  }
 
-  let claudeResp = '';
-  let geminiResp = '';
+  const conv = getActive();
+  const chatEl = document.getElementById('chat');
 
-  // --- CLAUDE ---
+  // Remove tela de boas-vindas
+  const welcome = chatEl.querySelector('.welcome');
+  if (welcome) {
+    chatEl.innerHTML = '';
+    const div = document.createElement('div'); div.className='divider'; div.textContent='hoje';
+    chatEl.appendChild(div);
+  }
+
+  const t0 = now();
+  conv.messages.push({ role:'user', text, time:t0 });
+  updateMeta(conv.id, text);
+  addUserEl(text, t0);
+
+  ibox.value = ''; ibox.style.height='auto'; sbtn.disabled=true;
+
+  // Histórico para contexto (últimas 8 trocas)
+  const hist = conv.messages.slice(-16).map(m =>
+    m.role==='user' ? `Rone: ${m.text}` : `${m.agent==='tony'?'Tony':m.agent==='arle'?'Arlequina':'Bruce'}: ${m.text}`
+  ).join('\n');
+
+  let tonyR='', arleR='';
+
+  // TONY
   {
-    await sleep(800);
+    await sleep(600);
     const typ = showTyping(AGENTS[0]);
     await sleep(AGENTS[0].delay);
     typ.remove();
     try {
-      claudeResp = await callEdge('claude', { system: AGENTS[0].system, userMsg: text });
-      addAgentMsg(AGENTS[0], claudeResp);
-    } catch (e) {
-      addErrorMsg(AGENTS[0], 'Erro ao conectar: ' + e.message);
-    }
+      const t = now();
+      tonyR = await callEdge(AGENTS[0].fn, {
+        system: AGENTS[0].system,
+        userMsg: `Histórico da conversa:\n${hist}\n\nRone acabou de dizer: "${text}"\n\nResponda como Tony:`
+      });
+      conv.messages.push({ role:'agent', agent:'tony', text:tonyR, time:t });
+      saveConvs(convs);
+      addAgentEl(AGENTS[0], tonyR, t);
+    } catch(e) { addErrEl(AGENTS[0], 'Erro: '+e.message); }
   }
 
-  // --- GEMINI ---
+  // ARLEQUINA
   {
-    await sleep(900);
+    await sleep(700);
     const typ = showTyping(AGENTS[1]);
     await sleep(AGENTS[1].delay);
     typ.remove();
     try {
-      const ctx = `Mensagem do Rone: ${text}${claudeResp ? '\n\nClaude respondeu: ' + claudeResp : ''}\n\nAgora responda como Gemini:`;
-      geminiResp = await callEdge('gemini', { system: AGENTS[1].system, userMsg: ctx });
-      addAgentMsg(AGENTS[1], geminiResp);
-    } catch (e) {
-      addErrorMsg(AGENTS[1], 'Erro ao conectar: ' + e.message);
-    }
+      const t = now();
+      arleR = await callEdge(AGENTS[1].fn, {
+        system: AGENTS[1].system,
+        userMsg: `Histórico da conversa:\n${hist}\n\nRone disse: "${text}"\n${tonyR?`Tony respondeu: "${tonyR}"\n`:''}Responda como Arlequina (lembre: chame Rone de pudinzinho):`
+      });
+      conv.messages.push({ role:'agent', agent:'arle', text:arleR, time:t });
+      saveConvs(convs);
+      addAgentEl(AGENTS[1], arleR, t);
+    } catch(e) { addErrEl(AGENTS[1], 'Erro: '+e.message); }
   }
 
-  // --- CHATGPT ---
+  // BRUCE
   {
-    await sleep(1000);
+    await sleep(700);
     const typ = showTyping(AGENTS[2]);
     await sleep(AGENTS[2].delay);
     typ.remove();
     try {
-      const ctx = `Mensagem do Rone: ${text}${claudeResp ? '\n\nClaude disse: ' + claudeResp : ''}${geminiResp ? '\n\nGemini disse: ' + geminiResp : ''}\n\nAgora responda como ChatGPT fechando o debate:`;
-      const gptResp = await callEdge('openai', { system: AGENTS[2].system, userMsg: ctx });
-      addAgentMsg(AGENTS[2], gptResp);
-    } catch (e) {
-      addErrorMsg(AGENTS[2], 'Erro ao conectar: ' + e.message);
-    }
+      const t = now();
+      const bruceR = await callEdge(AGENTS[2].fn, {
+        system: AGENTS[2].system,
+        userMsg: `Histórico da conversa:\n${hist}\n\nRone disse: "${text}"\n${tonyR?`Tony disse: "${tonyR}"\n`:''}\${arleR?`Arlequina disse: "${arleR}"\n`:''}Responda como Bruce, encontrando o insight ou síntese que faltou:`
+      });
+      conv.messages.push({ role:'agent', agent:'bruce', text:bruceR, time:t });
+      saveConvs(convs);
+      addAgentEl(AGENTS[2], bruceR, t);
+    } catch(e) { addErrEl(AGENTS[2], 'Erro: '+e.message); }
   }
 
-  sbtn.disabled = false;
-  ibox.focus();
+  sbtn.disabled=false; ibox.focus();
 }
+
+// ── INIT ──
+if (!activeId || !convs.find(c=>c.id===activeId)) { activeId=null; saveActive(null); }
+renderConvList();
+renderChat();
 </script>
 </body>
 </html>
